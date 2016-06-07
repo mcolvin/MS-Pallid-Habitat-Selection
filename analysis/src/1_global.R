@@ -1,0 +1,6 @@
+library(rJava)
+library(xlsx)
+library(R2jags)
+library(plyr)
+library(reshape2)
+library(RColorBrewer)
