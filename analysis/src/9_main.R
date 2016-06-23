@@ -1,6 +1,6 @@
 
 
-setwd("C:/Users/mcolvin/Documents/projects/MS-Pallids/analysis")
+setwd("C:/Users/mcolvin/Documents/projects/MS-Pallid-Habitat-Selection/analysis")
 	source("./src/1_global.R")  	
 	source("./src/2_functions.R")         
 	source("./src/3_load.R")     
@@ -11,8 +11,8 @@ setwd("C:/Users/mcolvin/Documents/projects/MS-Pallids/analysis")
 
 
 
-setwd("C:/Users/mcolvin/Documents/projects/MS-Pallids/analysis")
-topdir<- "C:/Users/mcolvin/Documents/projects/MS-Pallids"
+setwd("C:/Users/mcolvin/Documents/projects/MS-Pallid-Habitat-Selection/analysis")
+topdir<- "C:/Users/mcolvin/Documents/projects/MS-Pallid-Habitat-Selection"
 # COMPILE FIGURES TO DOCX
 knitr::knit("./src/2_figures.Rmd")	
 knitr::pandoc('2_figures.md', format='docx')
@@ -24,8 +24,6 @@ knitr::knit("./src/3_tables.Rmd")
 knitr::pandoc('3_tables.md', format='docx')
 file.copy("./3_tables.docx",paste0(topdir,"/3_tables.docx"),overwrite=TRUE)
 file.remove("./3_tables.docx");file.remove("./3_tables.md")	
-
-
 
 
 
