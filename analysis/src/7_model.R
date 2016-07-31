@@ -917,3 +917,150 @@ mod_08<- function()
 	# END HABITAT SELECITON MODEL
 }
 # end model
+
+
+
+
+### MODEL 3 INCLUDING GOF AND 
+### HABITAT SELECTION FOR VALUES -2,2 FOR TEMP AND STAGE
+mod_03_gof<- function()
+	{
+	## PROCESS MODEL
+	for(i in 1:nobs1)
+		{
+		for(habitat in 1:nhabs)
+			{
+			# PREDICT PROPORTION OF HABITAT ON LOGIT SCALE
+			z[i,habitat]<- beta1[X[i,1],habitat]+beta2[X[i,1],habitat]*X[i,2]
+			z_exp[i,habitat]<-  exp(z[i,habitat])
+			# CONVERT TO PROBABILITY
+			p[i,habitat]<-z_exp[i,habitat]/sum(z_exp[i,1:nhabs])
+			}# end h		
+		}
+
+	## OBSERVATON MODEL (LIKLIHOOD MODEL)
+	## PREDICTING AVAILABILITY GIVEN STAGE
+	for(i in 1:nobs1)
+		{
+		areas[i,1:nhabs]~dmulti(p[i,1:nhabs],total[i])		
+		}
+		
+		
+	# PRIORS		
+	## BASELINE CONSTRAIN TO BE 0	
+	### INTERCEPT
+	for(i in 1:2)
+		{
+		beta1[i,1]<-0
+		beta1[i,2]~dnorm(0,0.37)
+		beta1[i,3]~dnorm(0,0.37)
+		beta1[i,4]~dnorm(0,0.37)
+		beta1[i,5]~dnorm(0,0.37)
+		beta1[i,6]~dnorm(0,0.37)
+		beta1[i,7]~dnorm(0,0.37)
+	  
+		### x1: BETAS
+		beta2[i,1]<-0
+		beta2[i,2]~dnorm(0,0.37)	
+		beta2[i,3]~dnorm(0,0.37)
+		beta2[i,4]~dnorm(0,0.37)
+		beta2[i,5]~dnorm(0,0.37)
+		beta2[i,6]~dnorm(0,0.37)
+		beta2[i,7]~dnorm(0,0.37)
+		}	
+	# END AVAILABILITY MODEL
+
+	## PRECICT AVAILABILITY
+	for(i in 1:nobs2)
+		{
+		for(habitat in 1:nhabs)
+			{
+			z_hat[i,habitat]<- beta1[XX[i,3],habitat]+beta2[XX[i,3],habitat]*XX[i,2]
+			z_hat_exp[i,habitat]<-  exp(z_hat[i,habitat])
+			# CONVERT TO PROBABILITY
+			avail_hat[i,habitat]<-z_hat_exp[i,habitat]/sum(z_hat_exp[i,1:nhabs])
+			}
+		}
+	## END
+	
+	
+	# BEGIN HABITAT SELECTION MODEL
+		## PROCESS MODEL
+	for(i in 1:nobs2)
+		{
+		for(habitat in 1:nhabs)
+			{
+			zz[i,habitat]<-Intercept[XX[i,3],habitat]+
+				Beta_stage[XX[i,3],habitat]*XX[i,2]+
+				Beta_temp[XX[i,3],habitat]*XX[i,1]+
+				log(avail_hat[i,habitat])# PREDICTED PROP. AVAILABLE GIVEN STAGE
+			zz_exp[i,habitat]<- exp(zz[i,habitat])
+			pp[i,habitat]<-zz_exp[i,habitat]/sum(zz_exp[i,1:nhabs])
+			}# end h		
+		}# end i
+	
+	## OBSERVATON MODEL (LIKLIHOOD MODEL)
+	for(i in 1:nobs2)
+		{
+		hab[i]~dcat(pp[i,1:nhabs])	
+		}
+		
+	## HABITAT SELECITON
+	for(i in 1:n_sel)
+		{
+		for(habitat in 1:nhabs)
+			{
+			# AVAILABLE
+			z_hat2[i,habitat]<- beta1[select[i,3],habitat]+beta2[select[i,3],habitat]*select[i,2]
+			z_hat_exp2[i,habitat]<-  exp(z_hat2[i,habitat])
+			# CONVERT TO PROBABILITY
+			avail2[i,habitat]<-z_hat_exp2[i,habitat]/sum(z_hat_exp2[i,1:nhabs])
+			# PREDICTED PROBABILITY OF USE
+			zz2[i,habitat]<-Intercept[select[i,3],habitat]+
+				Beta_stage[select[i,3],habitat]*select[i,2]+
+				Beta_temp[select[i,3],habitat]*select[i,1]+
+				log(avail2[i,habitat])# PREDICTED PROP. AVAILABLE GIVEN STAGE
+			zz_exp2[i,habitat]<- exp(zz2[i,habitat])
+			pp2[i,habitat]<-zz_exp2[i,habitat]/sum(zz_exp2[i,1:nhabs])
+			
+			# SELECTION
+			sel[i,habitat]<- pp2[i,habitat]/avail2[i,habitat]			
+			}# end h
+		}
+	## END HABITAT SELECTION
+
+
+	
+		
+	# PRIORS		
+	## BASELINE CONSTRAIN TO BE 0	
+	### INTERCEPT
+	for(i in 1:2)
+		{
+		Intercept[i,1]<-0
+		Intercept[i,2]~dnorm(0,0.4)
+		Intercept[i,3]~dnorm(0,0.4)
+		Intercept[i,4]~dnorm(0,0.4)
+		Intercept[i,5]~dnorm(0,0.4)
+		Intercept[i,6]~dnorm(0,0.4)
+		Intercept[i,7]~dnorm(0,0.4)
+
+		Beta_stage[i,1]<-0
+		Beta_stage[i,2]~dnorm(0,0.4)	
+		Beta_stage[i,3]~dnorm(0,0.4)
+		Beta_stage[i,4]~dnorm(0,0.4)
+		Beta_stage[i,5]~dnorm(0,0.4)
+		Beta_stage[i,6]~dnorm(0,0.4)
+		Beta_stage[i,7]~dnorm(0,0.4)
+		
+		Beta_temp[i,1]<-0
+		Beta_temp[i,2]~dnorm(0,0.4)	
+		Beta_temp[i,3]~dnorm(0,0.4)
+		Beta_temp[i,4]~dnorm(0,0.4)
+		Beta_temp[i,5]~dnorm(0,0.4)
+		Beta_temp[i,6]~dnorm(0,0.4)
+		Beta_temp[i,7]~dnorm(0,0.4)
+		}
+	# END HABITAT SELECITON MODEL
+}
+# end model

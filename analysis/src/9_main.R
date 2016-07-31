@@ -2,7 +2,8 @@
 
 setwd("C:/Users/mcolvin/Documents/projects/MS-Pallid-Habitat-Selection/analysis")
 	source("./src/1_global.R")  	
-	source("./src/2_functions.R")         
+	source("./src/2_functions.R") 
+loadout<- FALSE	
 	source("./src/3_load.R")     
   	source("./src/4_clean.R" )
  	source("./src/5_tables.R") 

@@ -339,4 +339,146 @@ if(n==8)
 	mtext(side=2, "Probability of use", line=-0.75,outer=TRUE,cex=1.3)
 	}
 
+if(n==9)
+	{
+	load("./output/out-model-03-gof.Rdata")
+
+	selection<- expand.grid(temp=seq(-2,2,by=0.5),stage=0,loc=c(1,2))
+	selection<- rbind(selection,expand.grid(temp=0,stage=seq(-2,2,by=0.5),loc=c(1,2)))
+	selection$index<- c(1:nrow(selection))
+	sel_mn<- matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),1],ncol=7,byrow=FALSE)
+	sel_lci<-  out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),3],ncol=7,byrow=FALSE)
+	sel_uci<-  matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),7],ncol=7,byrow=FALSE)
+	
+	selection$temp_raw<- selection$temp*temp_sd+temp_mn
+	selection$stage_raw<- selection$stage*stage_sd+stage_mn
+
+	
+	par(mfrow=c(4,2),mar=c(2,3,0,0),oma=c(2,2,1,1))
+	for(kk in 1:7)
+		{
+		hab=kk
+		indx<- which(selection$stage==0)		
+		maxy<- (max(unlist(sel_uci[,hab]))*1.1)
+		miny<- min(unlist(sel_lci[,hab]))
+		pdat<-subset(selection, loc==1 & stage==0)
+		xxx<-ifelse(kk %in% c(1,2,3,4,5),'n','s')
+		yyy<-ifelse(kk %in% c(2,4,6),'s','s')
+		plot(stage~temp_raw,selection,type='n',ylim=c(miny,
+			maxy),
+			xlim=c(-1,35),las=1,ylab="Selection",
+			xlab="Temperature",xaxt=xxx,yaxt=yyy)
+		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=FALSE)}
+		if(kk %in% c(2,4,6)){axis(2, at=axTicks(2),labels=FALSE)}
+		for(i in 1:nrow(pdat))
+			{
+			ii<- pdat$index[i]
+			points(pdat$temp_raw[i]-0.1,sel_mn[ii,hab],pch=19)
+			segments(pdat$temp_raw[i]-0.1,sel_lci[ii,hab],pdat$temp_raw[i]-0.1,sel_uci[ii,hab])
+			}
+		pdat<-subset(selection, loc==2 & stage==0)
+		for(i in 1:nrow(pdat))
+			{
+			ii<- pdat$index[i]
+			points(pdat$temp_raw[i]+0.1,sel_mn[ii,hab],pch=17)
+			segments(pdat$temp_raw[i]+0.1,
+				sel_lci[ii,hab],
+				pdat$temp_raw[i]+0.1,
+				sel_uci[ii,hab])
+			}		
+		abline(h=1,lty=3)
+		panLab(habs[kk])
+		# add density plot of detections
+		par(new=TRUE)
+		dns1<-density(na.omit(dat[dat$habitat==kk& dat$loc==1,]$TempC))
+		dns2<-density(na.omit(dat[dat$habitat==kk& dat$loc==2,]$TempC))
+		plot(dns1,col="lightgrey",main="",xlim=c(-2,14),xaxt='n',yaxt='n',
+			ylim=c(0,max(c(dns1$y,dns2$y))*1.4),lty=1,lwd=1)
+		points(dns2,lwd=1,lty=2,col="lightgrey",type='l')
+		mtext(side=1, "Temperature (C)",outer=TRUE,line=0.5,cex=1.3)
+		mtext(side=2, "Habitat selection",outer=TRUE,line=0.5,cex=1.3)
+		}
+	
+	plot.new();
+	legend(x=0,y=0.75,
+		legend=c("Catfish point","","Tara-Vicksburg",""),
+		pch=c(19,NA,17,NA),lty=c(NA,1,NA,2),col=c('black','lightgrey'),cex=1.3)
+		
+	
+	
+	# stage
+	
+	par(mfrow=c(4,2),mar=c(2,3,0,0),oma=c(2,2,1,1))
+	for(kk in 1:7)
+		{
+		hab=kk	
+		indx<- which(selection$temp==0)
+		maxy<- (max(unlist(sel_uci[indx,hab]))*1.1)
+		miny<- min(unlist(sel_lci[indx,hab]))
+		pdat<-subset(selection, loc==1 & temp==0)
+		xxx<-ifelse(kk %in% c(1,2,3,4,5),'n','s')
+		yyy<-ifelse(kk %in% c(2,4,6),'s','s')
+		plot(stage~stage_raw,selection,type='n',ylim=c(miny,
+			maxy),
+			xlim=c(-2,14),las=1,ylab="Selection",
+			xlab="Temperature",xaxt=xxx,yaxt=yyy)
+		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=FALSE)}
+		if(kk %in% c(2,4,6)){axis(2, at=axTicks(2),labels=FALSE)}
+		for(i in 1:nrow(pdat))
+			{
+			ii<- pdat$index[i]
+			points(pdat$stage_raw[i]-0.1,sel_mn[ii,hab],pch=19)
+			segments(pdat$stage_raw[i]-0.1,sel_lci[ii,hab],pdat$stage_raw[i]-0.1,sel_uci[ii,hab])
+			}
+		pdat<-subset(selection, loc==2 & temp==0)
+		for(i in 1:nrow(pdat))
+			{
+			ii<- pdat$index[i]
+			points(pdat$stage_raw[i]+0.1,sel_mn[ii,hab],pch=17)
+			segments(pdat$stage_raw[i]+0.1,
+				sel_lci[ii,hab],
+				pdat$stage_raw[i]+0.1,
+				sel_uci[ii,hab])
+			}		
+		abline(h=1,lty=3)
+		panLab(habs[kk])
+		# add density plot of detections
+		par(new=TRUE)
+		dns1<-density(na.omit(dat[dat$habitat==kk&dat$loc==1,]$Stage.m))
+		dns2<-density(na.omit(dat[dat$habitat==kk&dat$loc==2,]$Stage.m))
+		plot(dns1,col="lightgrey",main="",xlim=c(-2,14),xaxt='n',yaxt='n',
+			ylim=c(0,max(c(dns1$y,dns2$y))*1.4),lty=1,lwd=1)
+		points(dns2,lwd=1,lty=2,col="lightgrey",type='l')
+		mtext(side=1, "Stage",outer=TRUE,line=0.5,cex=1.3)
+		mtext(side=2, "Habitat selection",outer=TRUE,line=0.5,cex=1.3)
+		}
+	
+	plot.new();
+	legend(x=0,y=0.75,
+		legend=c("Catfish point","","Tara-Vicksburg",""),
+		pch=c(19,NA,17,NA),lty=c(NA,1,NA,2),col=c('black','lightgrey'),cex=1.3)
+	
+	plot(Stage.m~TempC,dat, ylab="Stage",xlab="Temperature")
+	}
+	
+	
+	if(n==44)
+	{
+	ests<-  M03$BUGSoutput$summary
+	temp_cfp<- ests[grep("Beta_temp",rownames(ests)),]	
+	temp_cfp<- temp_cfp[grep("1,",rownames(temp_cfp)),]	
+	stage_cfp<- ests[grep("Beta_stage",rownames(ests)),]	
+	stage_cfp<- stage_cfp[grep("1,",rownames(stage_cfp)),]		
+	
+	plot(c(temp_cfp[,1],stage_cfp[,1]),ylim=c(-1,1))
+	segments(y0=c(temp_cfp[,3],stage_cfp[,3]),y1=c(temp_cfp[,7],stage_cfp[,7]),x0=c(1:14),x1=c(1:14))
+	
+	
+	
+	temp_tv<- ests[grep("Beta_temp[2,",rownames(ests)),]	
+	
+	M03$BUGSoutput$mean
+
+	
+	}
 }

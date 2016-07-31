@@ -1,3 +1,39 @@
+# MODEL 3: TEMPERATURE AND STAGE WITH PREDICTIONS AND HABITAT SELECTION
+
+
+
+params<- c("beta1",'beta2','Intercept',
+	'Beta_stage','Beta_temp','p',"sel") 
+selection<- expand.grid(temp=seq(-2,2,by=0.5),stage=0,loc=c(1,2))
+selection<- rbind(selection,expand.grid(temp=0,stage=seq(-2,2,by=0.5),loc=c(1,2)))
+mod_dat2<- mod_dat
+mod_dat2$n_sel<- nrow(selection)
+mod_dat2$select<- selection
+inits<-function(){
+    list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'Beta_stage'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'Beta_temp'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
+   }
+out <- jags(data=mod_dat2,
+	inits=inits,
+	parameters=params,	
+	model.file=mod_03_gof,
+	n.chains = 3,	
+	n.iter = 75000,	
+	n.burnin = 30000,   
+	n.thin=2,
+	working.directory=getwd())
+save(out, file="./output/out-model-03-gof.Rdata")
+
+### END 3
+
+
+
+
+
+
 # MODEL 1: TEMPERATURE ONLY
 params<- c("beta1",'beta2','Intercept',
 	'Beta_temp','p') # THINGS TO KEEP TRACK OF
