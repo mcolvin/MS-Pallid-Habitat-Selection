@@ -28,6 +28,10 @@ file.remove("./3_tables.docx");file.remove("./3_tables.md")
 
 
 
+figures(14)
+figures(15)
+savePlot("./figures/figurex.jpeg",type="jpeg")
+
 # FIGURES	
 dev.new(width=11.25, height=11)
 figures(1);dev.off()

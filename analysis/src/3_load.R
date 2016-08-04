@@ -10,6 +10,9 @@ cp_avail<- data.frame(loc=1, cp_avail)
 vb_avail<-read.csv("./dat/VburgHabAvail.csv")
 vb_avail<- data.frame(loc=2, vb_avail)
 
+load("./output/out-model-03.Rdata")
+M03<- out
+
 if(loadout==TRUE){
 load("./output/out-model-01.Rdata")
 M01<- out
