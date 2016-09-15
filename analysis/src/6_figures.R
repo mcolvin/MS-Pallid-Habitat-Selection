@@ -522,7 +522,7 @@ if(n==14)
 	## ESTIMATE PROPORATION AVAILABLE
 	y<-sapply(1:nrow(xx),function(x)
 		{
-		y<- c(b0[1,]) +c(b1[1,])*xx$stage_scaled[x]
+		y<- c(b0[2,]) +c(b1[2,])*xx$stage_scaled[x]
 		p<- exp(y)/sum(exp(y))
 		return(p)
 		})
@@ -530,7 +530,7 @@ if(n==14)
 
 	y_cum<-sapply(1:nrow(xx),function(x)
 		{
-		y<- c(b0[1,]) +c(b1[1,])*xx$stage_scaled[x]
+		y<- c(b0[2,]) +c(b1[2,])*xx$stage_scaled[x]
 		p<- exp(y)/sum(exp(y))
 		p<-cumsum(p)
 		return(p)
