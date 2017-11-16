@@ -28,8 +28,8 @@ kable(tbl1,digits=2,caption = NULL,row.names=FALSE)
 figures(1)
 ```
 
-Figure 1.  Lower Mississippi River tempeature and 
-stage over the study period for Catfish Point river segement.
+Figure 1.  Lower Mississippi River temperature and 
+stage over the study period for Catfish Point river segment.
 
 
 
@@ -37,9 +37,9 @@ stage over the study period for Catfish Point river segement.
 figures(2)
 ```
 
-Figure 2.  Lower Mississippi River tempeature and 
+Figure 2.  Lower Mississippi River temperature and 
 stage over the study period for Tara to Vicksburg 
-river segement.
+river segment.
 
 
 
