@@ -1,5 +1,0 @@
-library(R2jags)
-library(plyr)
-library(reshape2)
-library(RColorBrewer)
-library(knitr)
