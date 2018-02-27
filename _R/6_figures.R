@@ -111,9 +111,7 @@ if(n==4)
 	legend(7,0.15,legend=c('MC','SND','WD','NAT','REV','SC','ILT'),
 		fill=color, horiz=TRUE,cex=0.8,bg="white",xjust=0.5)	
 	}
-
-	
-	if(n==5)
+if(n==5)
 	{# HABITAT SELECTION FOR CATFISH POINT: TEMPERATURE
 	# temp -1.6,1.6
 	# stage -2.2,2
@@ -343,7 +341,6 @@ if(n==8)
 	mtext(side=1, "Stage", line=1.5,outer=TRUE,cex=1.3)
 	mtext(side=2, "Probability of use", line=-0.75,outer=TRUE,cex=1.3)
 	}
-
 if(n==9)
 	{
 	load("./output/out-model-03-gof.Rdata")
@@ -465,9 +462,6 @@ if(n==9)
 	
 	plot(Stage.m~TempC,dat, ylab="Stage",xlab="Temperature")
 	}
-	
-	
-
 if(n==14)
 	{# PLOT PREDCITED AVAILABILITY WITH STAGE for CATFISH POINT AND TARA-VICKBURG
 	b0<- M03$BUGSoutput$mean$beta1
@@ -716,8 +710,6 @@ if(n==14)
 	legend("topright",legend=c('MC','SND','WD','NAT','REV','SC','ILT'),
 		lwd=4,lty=1,col=color,bty='n', cex=0.8,xjust=0.5,ncol=2)	
 	}
-
-	
 if(n==15)
 	{
 	load("./output/out-model-03-gof.Rdata")
@@ -817,4 +809,12 @@ if(n==15)
 	mtext(side=2, "Habitat selection",outer=TRUE,line=0)
 	
 	}
+if(n==16)
+    {# PLOT OF INPUTS (CURRENT VELOCITY, DEPTH, STAGE, TEMPERATURE)
+    indx<-match(c("depth","kph","Stage.m","TempC"),names(dat))
+    pairs(dat[,indx])
+    
+    }
+
+
 	}

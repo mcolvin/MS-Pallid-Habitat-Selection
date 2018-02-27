@@ -14,8 +14,23 @@ stage_sd<-sd(dat$Stage.m)
 
 temp_mn<- mean(dat$TempC)
 temp_sd<- sd(dat$TempC)
-   
-   
+
+depth_mn<- mean(na.omit(dat$depth))
+depth_sd<- sd(na.omit(dat$depth))
+
+kph_mn<- mean(na.omit(dat$kph))
+kph_sd<- sd(na.omit(dat$kph)   )
+
+
+## HABITAT OBSERVED DATA AND COVARIATES
+XX=as.matrix(cbind(
+    dat$loc,
+    scale(dat$Stage.m,stage_mn,stage_sd),    
+    scale(dat$TempC,temp_mn,temp_sd),
+    scale(dat$depth,depth_mn,depth_sd),
+    scale(dat$kph,kph_mn,kph_sd),        
+    dat$habitat))
+XX<-XX[complete.cases(XX),]
 # BUNDLE UP DATA
 mod_dat<- list(total=apply(avail[,-c(1,2)],1,sum),
 	X=as.matrix(avail[,c(1,2)]),
@@ -23,12 +38,9 @@ mod_dat<- list(total=apply(avail[,-c(1,2)],1,sum),
 	nhabs=7,
 	nobs1=nrow(avail),
 	# HABITAT SELCTION DATA
-	nobs2=nrow(dat), 
-	hab=dat$habitat,
-	XX=as.matrix(cbind(
-		scale(dat$TempC,temp_mn,temp_sd),
-		scale(dat$Stage.m,stage_mn,stage_sd),
-		dat$loc)))
+	nobs2=nrow(XX),
+    XX=XX)
+
 mod_dat$X[,2]<- scale(mod_dat$X[,2],stage_mn,stage_sd) # SCALE STAGE TO LINK TO AVIALBILITY MODEL
 
 

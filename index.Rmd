@@ -1,104 +1,100 @@
 
 
-	source("./R/1_global.R")  	
-	source("./R/2_functions.R") 
-	loadout<- FALSE	
-	source("./R/3_load.R")     
-  	source("./R/4_clean.R" )
- 	source("./R/5_tables.R") 
-	source("./R/6_figures.R") 
-	source("./R/7_model.R")
-	#source("./R/8_analysis.R")
+
+```{r}
+source("_R/1_global.R")  	
+source("_R/2_functions.R")  
+loadout<-TRUE       
+source("_R/3_load.R")     
+source("_R/4_clean.R" )
+source("_R/5_tables.R") 
+source("_R/6_figures.R") 
+source("_R/7_model.R")
+```
 
 
+# Tables
 
-figures(14)
+Table 1. Deviance information criteria (DIC) values and model 
+selection results for candidate habitat selection models for 
+Pallid Sturgeon captures in the Lower Mississippi River. 
 
-# PLOTS OF TEMPERATURE AND STAGE VERSUS HABIAT SELECTION 
-# FOR BOTH RIVER SEGMENTS
-figures(15) 
-
-# FIGURES
-
+```{r, echo=FALSE,warnings=FALSE, message=FALSE}
+tbl1<- tables(1)
+kable(tbl1,digits=2,caption = NULL,row.names=FALSE)
+```
 
 # Figures
 
-### Figure 1.  Lower Mississippi River temperature and 
-### stage over the study period for Catfish Point river segment.
-
+```{r, echo=FALSE,dpi=600,fig.cap=""}
 figures(1)
+```
 
-### Figure 2.  Lower Mississippi River temperature and 
-### stage over the study period for Tara to Vicksburg 
-### river segment.
+Figure 1.  Lower Mississippi River temperature and 
+stage over the study period for Catfish Point river segment.
 
+
+
+```{r, echo=FALSE,dpi=600,fig.cap=""}
 figures(2)
-  
-### Figure 3.  Predicted habitat availability at varying river 
-### stages for Catfish Point (top panel) and Tara to Vicksburg 
-### (bottom panel) segments of the lower Mississippi River. 
- 
+```
+
+Figure 2.  Lower Mississippi River temperature and 
+stage over the study period for Tara to Vicksburg 
+river segment.
+
+
+
+```{r, echo=FALSE,dpi=600,fig.cap=""}
 figures(4)
+```
+  
+Figure 3.  Predicted habitat availability at varying river 
+stages for Catfish Point (top panel) and Tara to Vicksburg 
+(bottom panel) segments of the lower Mississippi River.  
 
-### Figure 4. Predicted probability of habitat use at 
-### varying river temperature with river stage held at average.
-### Predicted values for the Mississippi River segment located at Catfish Point.
-### Top panel represents actual probabilities of use and bottom panel represents 
-### cumlative probabilities.
-
+```{r, echo=FALSE,dpi=600,fig.cap=""}
 figures(5)
+```
 
-### Figure 4.  Predicted probability of habitat use at 
-### varying river stage with river temperature held at average.
-### Predicted values for the Mississippi River segment located at Catfish Point.
-### Top panel represents actual probabilities of use and bottom panel represents 
-### cumlative probabilities.  
+Figure 4. Predicted probability of habitat use at 
+varying river temperature with river stage held at average.
+Predicted values for the Mississippi River segment located at Catfish Point.
+Top panel represents actual probabilities of use and bottom panel represents 
+cumlative probabilities.
 
+
+```{r, echo=FALSE,dpi=600,fig.cap=""}
 figures(6)
+```
+
+Figure 4.  Predicted probability of habitat use at 
+varying river stage with river temperature held at average.
+Predicted values for the Mississippi River segment located at Catfish Point.
+Top panel represents actual probabilities of use and bottom panel represents 
+cumlative probabilities.  
 
 
-### Figure 5.  Predicted probability of habitat use at 
-### varying river temperature with river stage held at average.
-### Predicted values for the Mississippi River segment from Tara to Vicksburg.
-### Top panel represents actual probabilities of use and bottom panel represents 
-### cumlative probabilities. 
-
+```{r, echo=FALSE,dpi=600,fig.cap=""}
 figures(8)
+```
+
+Figure 5.  Predicted probability of habitat use at 
+varying river temperature with river stage held at average.
+Predicted values for the Mississippi River segment from Tara to Vicksburg.
+Top panel represents actual probabilities of use and bottom panel represents 
+cumlative probabilities. 
 
 
-### Figure 6. Predicted probability of habitat use at 
-### varying river stage with river temperature held at average.
-### Predicted values for the Mississippi River segment from Tara to Vicksburg.
-### Top panel represents actual probabilities of use and bottom panel represents 
-### cumlative probabilities.
 
+
+```{r, echo=FALSE,dpi=600,fig.cap=""}
 figures(7)
+```
 
-### pr USE|STAGE T - V
-figures(8)
-
-### TAKES A MINUTE TO RUN
-figures(9)
-
-figures(13)
-
-
-### VARYING METRICS FOR BOTH SEGEMENTS (pr AVAILIBLE, pr USE|TEMP, pr USE|STAGE)
-figures(14)
-
-### TAKES A MINUTE TO RUN
-### HABITAT SELECTION FOR BOTH SEGMENTS
-figures(15)
-
-
-## MODEL SELECTION TABLE
-
-### Table 1. Deviance information criteria (DIC) values and model 
-### selection results for candidate habitat selection models for 
-### Pallid Sturgeon captures in the Lower Mississippi River. 
-
-tbl1<- tables(1)
-write.csv(tbl1,"./tables/model-selection.csv")
-
-
+Figure 6. Predicted probability of habitat use at 
+varying river stage with river temperature held at average.
+Predicted values for the Mississippi River segment from Tara to Vicksburg.
+Top panel represents actual probabilities of use and bottom panel represents 
+cumlative probabilities.
 
