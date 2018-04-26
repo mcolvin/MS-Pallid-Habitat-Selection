@@ -13,14 +13,24 @@ if(n==1)
 	}
 if(n==2)
 	{ # PLOT OF TEMPERATURE AT TARA TO VICKSBURG
-	plotDat2<- subset(dat,loc==2)
-	par(mfrow=c(2,1),mar=c(1,4,0,1),oma=c(3,1,1,1),cex.lab=1.3)
-	plot(TempC~date,plotDat2,type="b",col="black",xlab="",ylab="Temperature (C)",
-		pch=19,main="",xaxt='n',las=1)
+	plotDat1<- subset(dat,loc==1)
+	par(mfrow=c(2,1),mar=c(1,5,0,1),oma=c(3,1,1,1),cex.lab=1.3)
+	plot(TempC~date,plotDat1,type="l",
+        col="black",xlab="",
+        ylab=expression(paste("Temperature (",degree,"C)")),
+		pch=19,main="",xaxt='n',las=1,lwd=2)
 	axis(2,at=axTicks(1),labels=FALSE)
-	plot(Stage.m~date,plotDat2,type="b",col="black",xlab="",ylab="Stage (M)",
-		pch=19,main="",las=1)
+	plotDat2<- subset(dat,loc==2)	
+    points(TempC~date,plotDat2,type='l',col="grey",lwd=2)
+    ## STAGE
+    plot(Stage.m~date,plotDat1,type="l",col="black",xlab="",
+        ylab="Stage (m)",
+		pch=19,main="",las=1,lwd=2,
+        ylim=c(-2,15))
 	mtext(side=1,"Date",outer=TRUE, line=1.5,cex=1.3)
+    points(Stage.m~date,plotDat2,type='l',col="grey",lwd=2)    
+    legend("bottomleft",c("Catfish Point","Vicksburg"),
+        lty=c(1,1),col=c("black","grey"),lwd=2,bty='n')
 	}
 if(n==3)
 	{# PLOT OF ESTIMATED AND OBSERVED AVAILABILITY
@@ -33,7 +43,8 @@ if(n==4)
 	{# PLOT PREDCITED AVAILABILITY WITH STAGE for CATFISH POINT AND TARA-VICKBURG
 	b0<- M03$BUGSoutput$mean$beta1
 	b1<-M03$BUGSoutput$mean$beta2
-	color<- brewer.pal(7,"Set2")
+	color<-rev(brewer.pal(7,"Set2"))
+	#color<- (grey(1/c(1:8))[-1])
 	## CATFISH POINT
 	xx<- data.frame(stage=seq(-2,10,0.1))
 	## SCALE STAGE 
@@ -71,7 +82,7 @@ if(n==4)
 		}
 	#matpoints(obs_p[obs_p$loc==1,]$Stage,obs_p[obs_p$loc==1,-c(1,2)],pch=1,type='p')
 	mtext(side=2, "Proportion available",outer=TRUE, line=0)
-	mtext(side=1, "Stage",outer=TRUE, line=0)
+	mtext(side=1, "Stage (m)",outer=TRUE, line=0)
 	
 	
 	## TARA TO VICKSBURG
@@ -79,9 +90,6 @@ if(n==4)
 	## SCALE STAGE 
 	xx$stage_scaled<- scale(xx$stage, center = mean(dat$Stage.m), scale = sd(dat$Stage.m))
 
-
-
-	
 	## ESTIMATE PROPORATION AVAILABLE
 	y<-sapply(1:nrow(xx),function(x)
 		{
@@ -100,7 +108,7 @@ if(n==4)
 		})
 	y_cum<- t(y_cum)
 	matplot(xx$stage,y_cum,type='n',las=1,xlab="",
-		ylab="",main="Tara to Vicksburg",xaxt='n',ylim=c(0,1))
+		ylab="",main="Vicksburg",xaxt='n',ylim=c(0,1))
 	axis(1,at=axTicks(1))
 	for(i in 7:1)
 		{
@@ -108,9 +116,16 @@ if(n==4)
 			c(y_cum[,i],rep(0,nrow(xx))),
 			col=color[i])		
 		}
-	legend(7,0.15,legend=c('MC','SND','WD','NAT','REV','SC','ILT'),
-		fill=color, horiz=TRUE,cex=0.8,bg="white",xjust=0.5)	
-	}
+	legend(4,0.3,legend=c('Main Channel',
+        'Sandbar',
+        'Wing dike',
+        'Natural bank','Revetted bank',
+        'Secondary channel',
+        'Island tip'),
+		fill=color, horiz=FALSE,cex=0.6,
+        bg="white",xjust=0.5,ncol=2)	
+	
+    }
 if(n==5)
 	{# HABITAT SELECTION FOR CATFISH POINT: TEMPERATURE
 	# temp -1.6,1.6
@@ -148,7 +163,7 @@ if(n==5)
 	y_cum<- t(apply(y,2,cumsum)	)		
 	y<- t(y)
 
-	color<- brewer.pal(7,"Set2")
+	color<- rev(brewer.pal(7,"Set2"))
 	par(mfrow=c(2,1),mar=c(1,3,1,1),oma=c(4,2,1,1),cex.lab=1.3)
 	matplot(newdat$temp,y,type='l',ylim=c(0,0.4),las=1, ylab="",
 		main="",col=color,lty=1,lwd=3,xaxt='n')
@@ -170,7 +185,7 @@ if(n==5)
 	mtext(side=2, "Probability of use", line=-0.75,outer=TRUE,cex=1.3)
 	}
 if(n==6)
-	{# HABITAT SELECTION FOR CATFISH POINT: STAGE
+	{# HABITAT SELECTION FOR CATFISH POINT & VICKSBURG: STAGE
 	# temp -1.6,1.6
 	# stage -2.2,2
 	preddat<- expand.grid(temp=sort(c(seq(4,32,0.25),temp_mn)),
@@ -208,11 +223,11 @@ if(n==6)
 
 	color<- brewer.pal(7,"Set2")
 	par(mfrow=c(2,1),mar=c(1,3,1,1),oma=c(4,2,1,1),cex.lab=1.3)
-	matplot(newdat$stage,y,type='l',ylim=c(0,0.8),las=1, ylab="",
-		main="",col=color,lty=1,lwd=3,xaxt='n')
-	axis(1,at=axTicks(1),labels=FALSE)
-	legend("topright",legend=c('MC','SND','WD','NAT','REV','SC','ILT'),
-		lwd=4,lty=1,col=color,bty='n', horiz=TRUE,cex=0.8,xjust=0.5)	
+	#matplot(newdat$stage,y,type='l',ylim=c(0,0.8),las=1, ylab="",
+	#	main="",col=color,lty=1,lwd=3,xaxt='n')
+	#axis(1,at=axTicks(1),labels=FALSE)
+	#legend("topright",legend=c('MC','SND','WD','NAT','REV','SC','ILT'),
+	#	lwd=4,lty=1,col=color,bty='n', horiz=TRUE,cex=0.8,xjust=0.5)	
 	
 	matplot(newdat$stage,y_cum,type='n',ylim=c(0,1),las=1, ylab="",
 		main="",col=color,lty=1,lwd=2)
@@ -228,9 +243,62 @@ if(n==6)
 	mtext(side=3, "Catfish Point", line=-0.75,outer=TRUE,cex=1.5)
 	mtext(side=1, "Stage", line=1.5,outer=TRUE,cex=1.3)
 	mtext(side=2, "Probability of use", line=-0.75,outer=TRUE,cex=1.3)
+    
+    ## VICKSBURG
+    	preddat<- expand.grid(temp=sort(c(seq(4,32,0.25),temp_mn)),
+		stage=sort(c(seq(-2,12,0.1),stage_mn)),loc=2)
+	preddat$temp_scaled<- scale(preddat$temp, center = temp_mn, scale = temp_sd)
+	preddat$stage_scaled<- scale(preddat$stage, center =stage_mn, scale = stage_sd)
+	b0<- M03$BUGSoutput$mean$beta1
+	b1<-M03$BUGSoutput$mean$beta2
+	Intercept<- M03$BUGSoutput$mean$Intercept
+	Beta_temp<-M03$BUGSoutput$mean$Beta_temp
+	Beta_stage<-M03$BUGSoutput$mean$Beta_stage
+	newdat<- subset(preddat, temp_scaled==0)
+	## EFFECT OF TEMPERATURE AT AVERAGE STAGE
+	y<-sapply(1:nrow(newdat),function(x)
+		{
+		loc<- newdat$loc[x]
+		# AVAILABILITY GIVEN STAGE
+		y<- c(b0[loc,]) +
+			c(b1[loc,])*newdat$stage_scaled[x]
+		avail<- exp(y)/sum(exp(y))
+		
+		# HABITAT SELECTION
+		y<- c(Intercept[loc,]) +
+			c(Beta_temp[loc,])*newdat$temp_scaled[x]+
+			c(Beta_stage[loc,])*newdat$stage_scaled[x]+
+			log(avail)
+		s<- exp(y)/sum(exp(y))
+		return(s)
+		})
+	y_cum<- t(apply(y,2,cumsum)	)		
+	y<- t(y)
+	color<- brewer.pal(7,"Set2")
+	#par(mfrow=c(2,1),mar=c(1,3,1,1),oma=c(4,2,1,1),cex.lab=1.3)
+	#matplot(newdat$stage,y,type='l',ylim=c(0,0.9),las=1, ylab="",
+	#	main="",col=color,lty=1,lwd=3,xaxt='n')
+	#axis(1,at=axTicks(1),labels=FALSE)
+	#legend("topright",legend=c('MC','SND','WD','NAT','REV','SC','ILT'),
+	#	lwd=4,lty=1,col=color,bty='n', horiz=TRUE,cex=0.8,xjust=0.5)	
+	
+	matplot(newdat$stage,y_cum,type='n',ylim=c(0,1),las=1, ylab="",
+		main="",col=color,lty=1,lwd=2)
+
+	for(i in 7:1)
+		{
+		x<- c(newdat$stage,rev(newdat$stage))
+		y<- c(rep(0,nrow(y_cum)),rev(y_cum[,i]))
+		polygon(x,y,col=color[i])		
+		}
+		
+	mtext(side=3, "TARA TO VICKSBURG", line=-0.75,outer=TRUE,cex=1.5)
+	mtext(side=1, "Stage", line=1.5,outer=TRUE,cex=1.3)
+	mtext(side=2, "Probability of use", line=-0.75,outer=TRUE,cex=1.3)
+    
 	}
 if(n==7)
-	{# HABITAT SELECTION FOR TARA TO VICKSBURG: TEMPERATURE
+	{# PROBABILITY OF USE VICKSBURG: TEMPERATURE
 	preddat<- expand.grid(temp=sort(c(seq(4,30,0.25),temp_mn)),
 		stage=sort(c(seq(0,14,0.1),stage_mn)),loc=2)
 	preddat$temp_scaled<- scale(preddat$temp, center = temp_mn, scale = temp_sd)

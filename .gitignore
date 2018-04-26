@@ -30,7 +30,8 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
-
+*.zip
+*.kmz
 # =========================
 # Operating System Files
 # =========================
