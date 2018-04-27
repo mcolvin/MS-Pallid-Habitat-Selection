@@ -3,6 +3,12 @@
 habs<-c('MC','SND','WD',
 'NAT','REV','SC','ILT')
 
+habs_full<- c('Main channel',
+        'Sandbar',
+        'Wing dike',
+        'Natural bank','Revetted bank',
+        'Secondary channel',
+        'Island tip')
 #dat<-read.csv("./dat/LMR.tracking.CPTV.avail.csv")
 dat<-read.csv("_dat/LMR.tracking.CPTV2.csv",na.strings = ".")
 cp_avail<-read.csv("_dat/CPHabAvail.csv",na.strings = ".")

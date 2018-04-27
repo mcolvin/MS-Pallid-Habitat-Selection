@@ -11,6 +11,37 @@ source("_R/5_tables.R")
 source("_R/6_figures.R") 
 source("_R/7_model.R")
 ```
+## manuscript figures.
+png(file = "_output/figure-02.png", bg = "transparent", type = c("cairo"), width=2000, height=2000, res=300)
+figures(2)
+dev.off()
+
+png(file = "_output/figure-03.png", bg = "transparent", type = c("cairo"), width=2000, height=2000, res=300)
+figures(3)
+dev.off()
+
+png(file = "_output/figure-04.png", bg = "transparent", type = c("cairo"), width=2000, height=2000, res=300)
+figures(4)
+dev.off()
+
+
+png(file = "_output/figure-05.png", bg = "transparent", type = c("cairo"), width=2000, height=2000, res=300)
+figures(5)
+dev.off()
+
+png(file = "_output/figure-06.png", bg = "transparent", type = c("cairo"), width=2000, height=2000, res=300)
+figures(6)
+dev.off()
+
+
+png(file = "_output/figure-S1.png", bg = "transparent", type = c("cairo"), width=2000, height=2000, res=300)
+figures("S1")
+dev.off()
+
+png(file = "_output/figure-S2.png", bg = "transparent", type = c("cairo"), width=2000, height=2000, res=300)
+figures("S2")
+dev.off()
+
 
 
 # Tables
