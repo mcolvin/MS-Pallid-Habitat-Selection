@@ -16,19 +16,19 @@ if(n==2)
 		pch=19,main="",las=1,lwd=2,
         ylim=c(-2,15))
 	mtext(side=1,"Date",outer=TRUE, line=1.5,cex=1.3)
-    points(Stage.m~date,plotDat2,type='l',col="black",lwd=2,lty=2)    
+    points(Stage.m~date,plotDat2,type='l',col="grey",lwd=2,lty=12)    
     legend("bottomleft",c("Catfish Point","Vicksburg"),
-        lty=c(1,2),col=c("black","black"),
+        lty=c(1,2),col=c("black","grey"),
             lwd=2,bty='n')
 	}
 if(n==3)
 	{# PLOT PREDCITED AVAILABILITY WITH STAGE for CATFISH POINT AND TARA-VICKBURG
 	b0<- M03$BUGSoutput$mean$beta1
 	b1<-M03$BUGSoutput$mean$beta2
-	color<-rev(brewer.pal(7,"Set2"))
+	#color<-rev(brewer.pal(7,"Set2"))    
 	#color<- (grey(1/c(1:8))[-1])
 	## CATFISH POINT
-	xx<- data.frame(stage=seq(-2,10,0.1))
+	xx<- data.frame(stage=seq(-2,12,0.1))
 	## SCALE STAGE 
 	xx$stage_scaled<- scale(xx$stage, center = mean(dat$Stage.m), scale = sd(dat$Stage.m))
 	
@@ -146,8 +146,8 @@ if(n==4)## 4
 	y_cum<- t(apply(y,2,cumsum)	)		
 	y<- t(y)
 
-	color<- rev(brewer.pal(7,"Set2"))
-	par(mfrow=c(2,1),mar=c(1,3,1,1),oma=c(4,2,1,1),cex.lab=1.3)
+	#color<- rev(brewer.pal(7,"Set2"))
+	par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 	#matplot(newdat$stage,y,type='l',ylim=c(0,0.8),las=1, ylab="",
 	#	main="",col=color,lty=1,lwd=3,xaxt='n')
 	#axis(1,at=axTicks(1),labels=FALSE)
@@ -156,7 +156,7 @@ if(n==4)## 4
 	
 	matplot(newdat$stage,y_cum,type='n',ylim=c(0,1),las=1, ylab="",
 		col=color,lty=1,lwd=2,main="Catfish Point",xaxt='n')
-    axis(1,at=axTicks(1),labels=FALSE)
+    axis(1,at=axTicks(1),labels=TRUE)
 	for(i in 7:1)
 		{
 		x<- c(newdat$stage,rev(newdat$stage))
@@ -205,8 +205,8 @@ if(n==4)## 4
 		}
 		
 	#mtext(side=3, "TARA TO VICKSBURG", line=-0.75,outer=TRUE,cex=1.5)
-	mtext(side=1, "Stage (m)", line=1.5,outer=TRUE,cex=1.3)
-	mtext(side=2, "Cumulative probability of use", line=-0.75,outer=TRUE,cex=1.3)
+	mtext(side=1, "Stage (m)", line=0,outer=TRUE)
+	mtext(side=2, "Cumulative probability of use", line=-0.75,outer=TRUE)
     	legend(1.5,0.3,legend=c('Main channel',
         'Sandbar',
         'Wing dike',
@@ -250,13 +250,13 @@ if(n==5)
 		})
 	y_cum<- t(apply(y,2,cumsum)	)		
 	y<- t(y)
-	color<- rev(brewer.pal(7,"Set2"))
-	par(mfrow=c(2,1),mar=c(1,3,2,1),oma=c(4,2,1,1),cex.lab=1.3)
+	#color<- rev(brewer.pal(7,"Set2"))
+par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 	matplot(newdat$temp,y_cum,type='n',
         ylim=c(0,1),las=1, ylab="",
 		main="Catfish Point",
         col=color,lty=1,lwd=2,xaxt='n')
-    axis(1,at=axTicks(1),labels=FALSE)
+    axis(1,at=axTicks(1),labels=TRUE)
 	for(i in 7:1)
 		{
 		x<- c(newdat$temp,rev(newdat$temp))
@@ -303,9 +303,9 @@ if(n==5)
 		polygon(x,y,col=color[i])		
 		}
 	#mtext(side=3, "TARA TO VICKSBURG", line=-0.75,outer=TRUE,cex=1.5)
-	mtext(side=1, expression(paste("Temperature (",degree,"C)")), line=1.5,outer=TRUE,cex=1.3)
+	mtext(side=1, expression(paste("Temperature (",degree,"C)")), line=1.5,outer=TRUE)
 	mtext(side=2, "Cumulative probability of use",
-        line=0,outer=TRUE,cex=1.3)
+        line=0,outer=TRUE)
     legend(10.5,0.3,legend=c('Main channel',
         'Sandbar',
         'Wing dike',
@@ -455,29 +455,31 @@ if(n=="S2")
 		for(i in 1:nrow(pdat))
 			{
 			ii<- pdat$index[i]
-			points(pdat$temp_raw[i]+0.1,sel_mn[ii,hab],pch=17)
+			points(pdat$temp_raw[i]+0.1,sel_mn[ii,hab],pch=17,col='red')
 			segments(pdat$temp_raw[i]+0.1,
 				sel_lci[ii,hab],
 				pdat$temp_raw[i]+0.1,
-				sel_uci[ii,hab])
+				sel_uci[ii,hab],col='red')
             }		
 		abline(h=1,lty=3)
-		panLab(habs[kk])
+		panLab(habs_full[kk])
+        rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==1,]$TempC)))
+        rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==2,]$TempC)),col='red')
 		# add density plot of detections
-		par(new=TRUE)
-		dns1<-density(na.omit(dat[dat$habitat==kk& dat$loc==1,]$TempC))
-		dns2<-density(na.omit(dat[dat$habitat==kk& dat$loc==2,]$TempC))
-		plot(dns1,col="lightgrey",main="",xlim=c(-2,14),xaxt='n',yaxt='n',
-			ylim=c(0,max(c(dns1$y,dns2$y))*1.4),lty=1,lwd=1)
-		points(dns2,lwd=1,lty=2,col="lightgrey",type='l')
+		#par(new=TRUE)
+		#dns1<-density(na.omit(dat[dat$habitat==kk& dat$loc==1,]$TempC))
+		#dns2<-density(na.omit(dat[dat$habitat==kk& dat$loc==2,]$TempC))
+		#plot(dns1,col="lightgrey",main="",xlim=c(-2,14),xaxt='n',yaxt='n',
+		#	ylim=c(0,max(c(dns1$y,dns2$y))*1.4),lty=1,lwd=1)
+		#points(dns2,lwd=1,lty=2,col="lightgrey",type='l')
 		mtext(side=1, "Temperature (C)",outer=TRUE,line=0.5,cex=1.3)
 		mtext(side=2, "Habitat selection",outer=TRUE,line=0.5,cex=1.3)
 		}
 	
-	plot.new();
-	legend(x=0,y=0.75,
-		legend=c("Catfish Point","","Vicksburg",""),
-		pch=c(19,NA,17,NA),lty=c(NA,1,NA,2),col=c('black','lightgrey'),cex=1.3)
+	#plot.new();
+	#legend(x=0,y=0.75,
+	#	legend=c("Catfish Point","","Vicksburg",""),
+	#	pch=c(19,NA,17,NA),lty=c(NA,1,NA,2),col=c('black','lightgrey'),cex=1.3)
 	}	
 
 if(n=="S1")
@@ -523,29 +525,33 @@ if(n=="S1")
 		for(i in 1:nrow(pdat))
 			{
 			ii<- pdat$index[i]
-			points(pdat$stage_raw[i]+0.1,sel_mn[ii,hab],pch=17)
+			points(pdat$stage_raw[i]+0.1,sel_mn[ii,hab],pch=17,col='red')
 			segments(pdat$stage_raw[i]+0.1,
 				sel_lci[ii,hab],
 				pdat$stage_raw[i]+0.1,
-				sel_uci[ii,hab])
+				sel_uci[ii,hab],col='red')
 			}		
 		abline(h=1,lty=3)
-		panLab(habs[kk])
+		panLab(habs_full[kk])
+        rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==1,]$Stage.m)))
+        rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==2,]$Stage.m)),col='red')
+  
+        
 		# add density plot of detections
-		par(new=TRUE)
-		dns1<-density(na.omit(dat[dat$habitat==kk&dat$loc==1,]$Stage.m))
-		dns2<-density(na.omit(dat[dat$habitat==kk&dat$loc==2,]$Stage.m))
-		plot(dns1,col="lightgrey",main="",xlim=c(-2,14),xaxt='n',yaxt='n',
-			ylim=c(0,max(c(dns1$y,dns2$y))*1.4),lty=1,lwd=1)
-		points(dns2,lwd=1,lty=2,col="lightgrey",type='l')
+		#par(new=TRUE)
+		#dns1<-density(na.omit(dat[dat$habitat==kk&dat$loc==1,]$Stage.m))
+		#dns2<-density(na.omit(dat[dat$habitat==kk&dat$loc==2,]$Stage.m))
+		#plot(dns1,col="lightgrey",main="",xlim=c(-2,14),xaxt='n',yaxt='n',
+		#	ylim=c(0,max(c(dns1$y,dns2$y))*1.4),lty=1,lwd=1)
+		#points(dns2,lwd=1,lty=2,col="lightgrey",type='l')
 		mtext(side=1, "Stage",outer=TRUE,line=0.5,cex=1.3)
 		mtext(side=2, "Habitat selection",outer=TRUE,line=0.5,cex=1.3)
 		}
 	
-	plot.new();
-	legend(x=0,y=0.75,
-		legend=c("Catfish Point","","Vicksburg",""),
-		pch=c(19,NA,17,NA),lty=c(NA,1,NA,2),col=c('black','lightgrey'),cex=1.3)
+	#plot.new();
+	#legend(x=0,y=0.75,
+	#	legend=c("Catfish Point","","Vicksburg",""),
+	#	pch=c(19,NA,17,NA),lty=c(NA,1,NA,2),col=c('black','lightgrey'),cex=1.3)
 	
 	#plot(Stage.m~TempC,dat, ylab="Stage",xlab="Temperature")
 	}

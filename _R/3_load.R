@@ -9,6 +9,15 @@ habs_full<- c('Main channel',
         'Natural bank','Revetted bank',
         'Secondary channel',
         'Island tip')
+color<-c(
+    rgb(45/255,173/255,228/255),     # MAIN CHANNEL 
+    rgb(247/255,235/255,18/255), # SAND BAR
+    rgb(22/255,173/255,81/255), # wing dike
+    rgb(5/255,5/255,5/255),     # NAT
+    rgb(238/255,33/255,25/255), # rev        
+    rgb(245/255,103/255,33/255), # side channel
+    rgb(153/255,81/255,160/255)) # island tip        
+        
 #dat<-read.csv("./dat/LMR.tracking.CPTV.avail.csv")
 dat<-read.csv("_dat/LMR.tracking.CPTV2.csv",na.strings = ".")
 cp_avail<-read.csv("_dat/CPHabAvail.csv",na.strings = ".")
