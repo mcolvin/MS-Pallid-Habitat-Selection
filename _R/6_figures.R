@@ -9,16 +9,16 @@ if(n==2)
 		pch=19,main="",xaxt='n',las=1,lwd=2)
 	axis(2,at=axTicks(1),labels=FALSE)
 	plotDat2<- subset(dat,loc==2)	
-    points(TempC~date,plotDat2,type='l',col="black",lwd=2,lty=2)
+    points(TempC~date,plotDat2,type='l',col="grey",lwd=2,lty=1)
     ## STAGE
     plot(Stage.m~date,plotDat1,type="l",col="black",xlab="",
         ylab="Stage (m)",
 		pch=19,main="",las=1,lwd=2,
         ylim=c(-2,15))
 	mtext(side=1,"Date",outer=TRUE, line=1.5,cex=1.3)
-    points(Stage.m~date,plotDat2,type='l',col="grey",lwd=2,lty=12)    
+    points(Stage.m~date,plotDat2,type='l',col="grey",lwd=2,lty=1)    
     legend("bottomleft",c("Catfish Point","Vicksburg"),
-        lty=c(1,2),col=c("black","grey"),
+        lty=c(1,1),col=c("black","grey"),
             lwd=2,bty='n')
 	}
 if(n==3)
@@ -303,7 +303,7 @@ par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 		polygon(x,y,col=color[i])		
 		}
 	#mtext(side=3, "TARA TO VICKSBURG", line=-0.75,outer=TRUE,cex=1.5)
-	mtext(side=1, expression(paste("Temperature (",degree,"C)")), line=1.5,outer=TRUE)
+	mtext(side=1, expression(paste("Temperature (",degree,"C)")), line=0,outer=TRUE)
 	mtext(side=2, "Cumulative probability of use",
         line=0,outer=TRUE)
     legend(10.5,0.3,legend=c('Main channel',
@@ -415,18 +415,19 @@ if(n==6)
 	}
     
 if(n=="S2")
-    {
+    {## TEMPERATURE
     load("_output/out-model-03-gof.Rdata")
-
-	selection<- expand.grid(temp=seq(-2,2,by=0.5),stage=0,loc=c(1,2))
-	selection<- rbind(selection,expand.grid(temp=0,stage=seq(-2,2,by=0.5),loc=c(1,2)))
+    temps<-seq(-2,2,by=0.5)#scale(seq(0,35,5),temp_mn,temp_sd) 
+    stages<-seq(-2,2,by=0.5)#scale(seq(-1,12,1),stage_mn,stage_sd)    
+	selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
+	selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
 	selection$index<- c(1:nrow(selection))
 	sel_mn<- matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),1],ncol=7,byrow=FALSE)
 	sel_lci<-  matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),3],ncol=7,byrow=FALSE)
 	sel_uci<-  matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),7],ncol=7,byrow=FALSE)
-	
 	selection$temp_raw<- selection$temp*temp_sd+temp_mn
-	selection$stage_raw<- selection$stage*stage_sd+stage_mn
+	selection$stage_raw<- selection$stage*stage_sd+stage_mn	
+
 
 	
 	par(mfrow=c(4,2),mar=c(2,3,0,0),oma=c(2,2,1,1))
@@ -443,7 +444,7 @@ if(n=="S2")
 			maxy),
 			xlim=c(-1,35),las=1,ylab="Selection",
 			xlab="Temperature",xaxt=xxx,yaxt=yyy)
-		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=FALSE)}
+		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=TRUE)}
 		if(kk %in% c(2,4,6)){axis(2, at=axTicks(2),labels=FALSE)}
 		for(i in 1:nrow(pdat))
 			{
@@ -483,11 +484,12 @@ if(n=="S2")
 	}	
 
 if(n=="S1")
-    {
+    {## Stage
     load("_output/out-model-03-gof.Rdata")
-
-	selection<- expand.grid(temp=seq(-2,2,by=0.5),stage=0,loc=c(1,2))
-	selection<- rbind(selection,expand.grid(temp=0,stage=seq(-2,2,by=0.5),loc=c(1,2)))
+    temps<-seq(-2,2,by=0.5)#scale(seq(0,35,5),temp_mn,temp_sd) 
+    stages<-seq(-2,2,by=0.5)#scale(seq(-1,12,1),stage_mn,stage_sd)    
+	selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
+	selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
 	selection$index<- c(1:nrow(selection))
 	sel_mn<- matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),1],ncol=7,byrow=FALSE)
 	sel_lci<-  matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),3],ncol=7,byrow=FALSE)
@@ -513,7 +515,7 @@ if(n=="S1")
 			maxy),
 			xlim=c(-2,14),las=1,ylab="Selection",
 			xlab="Temperature",xaxt=xxx,yaxt=yyy)
-		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=FALSE)}
+		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=TRUE)}
 		if(kk %in% c(2,4,6)){axis(2, at=axTicks(2),labels=FALSE)}
 		for(i in 1:nrow(pdat))
 			{
@@ -544,7 +546,7 @@ if(n=="S1")
 		#plot(dns1,col="lightgrey",main="",xlim=c(-2,14),xaxt='n',yaxt='n',
 		#	ylim=c(0,max(c(dns1$y,dns2$y))*1.4),lty=1,lwd=1)
 		#points(dns2,lwd=1,lty=2,col="lightgrey",type='l')
-		mtext(side=1, "Stage",outer=TRUE,line=0.5,cex=1.3)
+		mtext(side=1, "Stage (m)",outer=TRUE,line=0.5,cex=1.3)
 		mtext(side=2, "Habitat selection",outer=TRUE,line=0.5,cex=1.3)
 		}
 	
