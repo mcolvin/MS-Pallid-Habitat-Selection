@@ -86,8 +86,10 @@ save(out, file="./output/out-model-03.Rdata")
 # MODEL 3: TEMPERATURE AND STAGE WITH PREDICTIONS AND HABITAT SELECTION
 params<- c("beta1",'beta2','Intercept',
 	'Beta_stage','Beta_temp','p',"sel") 
-selection<- expand.grid(temp=seq(-2,2,by=0.5),stage=0,loc=c(1,2))
-selection<- rbind(selection,expand.grid(temp=0,stage=seq(-2,2,by=0.5),loc=c(1,2)))
+stages<- scale(seq(-2,18,by=2),stage_mn,stage_sd)   
+temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
+selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
+selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
 mod_dat2<- mod_dat
 mod_dat2$n_sel<- nrow(selection)
 mod_dat2$select<- selection
@@ -107,9 +109,9 @@ out <- jags(data=mod_dat2,
 	n.burnin = 30000,   
 	n.thin=2,
 	working.directory=getwd())
-save(out, file="./output/out-model-03-gof.Rdata")
+save(out, file="_output/out-model-03-gof.Rdata")
 ### END 3
-
+###############there is an error thrown as XX[,3] is supposed to index reach####
 
 
  
