@@ -19,7 +19,7 @@ depth_mn<- mean(na.omit(dat$depth))
 depth_sd<- sd(na.omit(dat$depth))
 
 kph_mn<- mean(na.omit(dat$kph))
-kph_sd<- sd(na.omit(dat$kph)   )
+kph_sd<- sd(na.omit(dat$kph))
 
 
 ## HABITAT OBSERVED DATA AND COVARIATES

@@ -11,7 +11,7 @@ source("_R/5_tables.R")
 source("_R/6_figures.R") 
 source("_R/7_model.R")
 ```
-## number of repeads
+## number of repeats
 
 table(dat$tag)
 dat$doy<-as.numeric(

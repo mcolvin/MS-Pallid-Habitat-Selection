@@ -110,8 +110,8 @@ out <- jags(data=mod_dat2,
 	n.thin=2,
 	working.directory=getwd())
 save(out, file="_output/out-model-03-gof.Rdata")
+
 ### END 3
-###############there is an error thrown as XX[,3] is supposed to index reach####
 
 
  

@@ -1190,7 +1190,8 @@ mod_03_gof<- function()
 		{
 		for(habitat in 1:nhabs)
 			{
-			z_hat[i,habitat]<- beta1[XX[i,1],habitat]+beta2[XX[i,1],habitat]*XX[i,2]
+			z_hat[i,habitat]<- beta1[XX[i,1],habitat]+
+                beta2[XX[i,1],habitat]*XX[i,2]
 			z_hat_exp[i,habitat]<-  exp(z_hat[i,habitat])
 			# CONVERT TO PROBABILITY
 			avail_hat[i,habitat]<-z_hat_exp[i,habitat]/sum(z_hat_exp[i,1:nhabs])
@@ -1226,11 +1227,13 @@ mod_03_gof<- function()
 		for(habitat in 1:nhabs)
 			{
 			# AVAILABLE
-			z_hat2[i,habitat]<- beta1[select[i,3],habitat]+beta2[select[i,3],habitat]*select[i,2]
+			z_hat2[i,habitat]<- beta1[select[i,3],habitat]+
+                beta2[select[i,3],habitat]*select[i,2]
 			z_hat_exp2[i,habitat]<-  exp(z_hat2[i,habitat])
 			# CONVERT TO PROBABILITY
 			avail2[i,habitat]<-z_hat_exp2[i,habitat]/sum(z_hat_exp2[i,1:nhabs])
-			# PREDICTED PROBABILITY OF USE
+			
+            # PREDICTED PROBABILITY OF USE
 			zz2[i,habitat]<-Intercept[select[i,3],habitat]+
 				Beta_stage[select[i,3],habitat]*select[i,2]+
 				Beta_temp[select[i,3],habitat]*select[i,1]+
