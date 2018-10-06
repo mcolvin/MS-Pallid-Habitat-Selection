@@ -1,14 +1,25 @@
 
 
+#######################################################################
+#
+#  COMBINE CATFISH POINT AND VICKSBURG AVAILABILITY INTO A SINGLE DATASE
+#
+#######################################################################
 
-
-# COMBINE CATFISH POINT AND VICKSBURG INTO A SINGLE DATASE
-avail<- rbind(cp_avail,vb_avail) # THIS IS SETTING THE STAGE TO BE ABLE TO RUN CATFISH POINT AND VICKSBURG AS 1 ANALYSIS
+# THIS IS SETTING THE STAGE TO BE ABLE TO RUN 
+# CATFISH POINT AND VICKSBURG AS 1 ANALYSIS
+avail<- rbind(cp_avail,vb_avail) 
 dat$loc<- ifelse(dat$Study.Site=="CP",1,2)
 
 dat$date<- as.Date(as.character(dat$date),"%m/%d/%Y")
 dat<- dat[order(dat$date),]
    
+   
+#######################################################################
+#
+#  CENTER CONTINUOUS VARIABLES
+#
+#######################################################################
 stage_mn<-mean(dat$Stage.m)
 stage_sd<-sd(dat$Stage.m)
 
@@ -22,6 +33,12 @@ kph_mn<- mean(na.omit(dat$kph))
 kph_sd<- sd(na.omit(dat$kph))
 
 
+
+#######################################################################
+#
+#  MAKE UP DATA FOR JAGS
+#
+#######################################################################
 ## HABITAT OBSERVED DATA AND COVARIATES
 XX=as.matrix(cbind(
     dat$loc,

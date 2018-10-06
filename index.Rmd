@@ -2,9 +2,9 @@
 
 
 ```{r}
+loadout<-FALSE 
 source("_R/1_global.R")  	
 source("_R/2_functions.R")  
-loadout<-TRUE       
 source("_R/3_load.R")     
 source("_R/4_clean.R" )
 source("_R/5_tables.R") 

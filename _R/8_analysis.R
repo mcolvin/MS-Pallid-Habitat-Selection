@@ -11,8 +11,8 @@ inits<-function(){
 	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'Beta_1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
    }
-ni<-750
-nb<-300
+ni<-750*1000
+nb<-300*1000
 # MODEL 1: STAGE ONLY
 out <- jags(data=mod_dat,
 	inits=inits,
@@ -67,21 +67,11 @@ out <- jags.parallel(data=mod_dat,
 	working.directory=getwd())
 save(out, file="./output/out-model-03.Rdata")
 
-
-
-
-
 #######################################################################
 #
 #  TWO PARAMETER MODELS WITHOUT INTERACTIONS
 #
 #######################################################################
-
-
-
-
-
- 
 
 # MODEL 3: TEMPERATURE AND STAGE WITH PREDICTIONS AND HABITAT SELECTION
 params<- c("beta1",'beta2','Intercept',
@@ -105,8 +95,7 @@ out <- jags(data=mod_dat2,
 	parameters=params,	
 	model.file=mod_03_gof,
 	n.chains = 3,	
-	n.iter = 75000,	
-	n.burnin = 30000,   
+	n.iter = ni,n.burnin = nb,     
 	n.thin=2,
 	working.directory=getwd())
 save(out, file="_output/out-model-03-gof.Rdata")
@@ -131,8 +120,7 @@ out <- jags.parallel(data=mod_dat,
 	parameters=params,	
 	model.file=mod_03,
 	n.chains = 3,	
-	n.iter = 75000,	
-	n.burnin = 30000,   
+	n.iter = ni,n.burnin = nb,     
 	n.thin=2,
 	working.directory=getwd())
 save(out, file="./output/out-model-03.Rdata")
@@ -154,8 +142,7 @@ out <- jags.parallel(data=mod_dat,
 	parameters=params,	
 	model.file=mod_04,
 	n.chains = 3,	
-	n.iter = 75000,	
-	n.burnin = 30000,   
+	n.iter = ni,n.burnin = nb,     
 	n.thin=2,
 	working.directory=getwd())
 save(out, file="./output/out-model-04.Rdata")
@@ -176,8 +163,7 @@ out <- jags.parallel(data=mod_dat,
 	parameters=params,	
 	model.file=mod_05,
 	n.chains = 3,	
-	n.iter = 75000,	
-	n.burnin = 30000,   
+	n.iter = ni,n.burnin = nb,     
 	n.thin=2,
 	working.directory=getwd())
 save(out, file="./output/out-model-05.Rdata")
@@ -196,8 +182,7 @@ out <- jags.parallel(data=mod_dat,
 	parameters=params,	
 	model.file=mod_06,
 	n.chains = 3,	
-	n.iter = 75000,	
-	n.burnin = 30000,    
+	n.iter = ni,n.burnin = nb,     
 	n.thin=2,
 	working.directory=getwd())
 save(out, file="./output/out-model-06.Rdata")
@@ -217,8 +202,7 @@ out <- jags.parallel(data=mod_dat,
 	parameters=params,	
 	model.file=mod_07,
 	n.chains = 3,	
-	n.iter = 75000,	
-	n.burnin = 30000,     
+	n.iter = ni,n.burnin = nb,     
 	n.thin=2,
 	working.directory=getwd())
 save(out, file="./output/out-model-07.Rdata")
@@ -239,8 +223,7 @@ out <- jags.parallel(data=mod_dat,
 	parameters=params,	
 	model.file=mod_08,
 	n.chains = 3,	
-	n.iter = 75000,	
-	n.burnin = 30000,    
+	n.iter = ni,n.burnin = nb,     
 	n.thin=2,
 	working.directory=getwd())
 save(out, file="./output/out-model-08.Rdata")
