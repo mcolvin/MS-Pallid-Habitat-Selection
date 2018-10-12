@@ -10,7 +10,7 @@ source("_R/4_clean.R" )
 source("_R/5_tables.R") 
 source("_R/6_figures.R") 
 source("_R/7_model.R")
-source("_R/8_analysis.R")
+#source("_R/8_analysis.R")
 ```
 
 ## number of repeats
