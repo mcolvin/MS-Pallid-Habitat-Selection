@@ -10,7 +10,9 @@ source("_R/4_clean.R" )
 source("_R/5_tables.R") 
 source("_R/6_figures.R") 
 source("_R/7_model.R")
+source("_R/8_analysis.R")
 ```
+
 ## number of repeats
 
 table(dat$tag)
@@ -19,6 +21,46 @@ dat$tmp<-1
 xx<-dcast(dat,tag~date,value.var="tmp",sum)
 zz<-apply(xx[,-1],1,paste,collapse="")
 zz[grep(zz,"11")]
+
+
+## Model fit and estimates for top model
+
+
+```{r}
+ni<-75*1000
+nb<-30*1000
+#######################################################################
+#
+#  MODEL 3: TEMPERATURE AND STAGE WITH PREDICTIONS AND HABITAT SELECTION
+#
+#######################################################################
+params<- c("beta1",'beta2','Intercept',
+	'Beta_stage','Beta_temp','p',"sel") 
+stages<- scale(seq(-2,18,by=2),stage_mn,stage_sd)   
+temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
+selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
+selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
+mod_dat2<- mod_dat
+mod_dat2$n_sel<- nrow(selection)
+mod_dat2$select<- selection
+inits<-function(){
+    list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'Beta_stage'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'Beta_temp'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
+   }
+out <- jags(data=mod_dat2,
+	inits=inits,
+	parameters=params,	
+	model.file=mod_03_gof,
+	n.chains = 3,	
+	n.iter = ni,n.burnin = nb,     
+	n.thin=2,
+	working.directory=getwd())
+save(out, file="_output/out-model-03-gof.Rdata")
+
+```
 
 ## manuscript figures.
 png(file = "_figures/figure-02.png", bg = "transparent", type = c("cairo"), width=2000, height=2000, res=300)

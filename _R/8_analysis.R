@@ -1,8 +1,12 @@
+ni<-75*1000
+nb<-30*1000
 
 
-
-
-
+#######################################################################
+#
+#  Model 01: STAGE ONLY
+#
+#######################################################################
 params<- c("beta1",'beta2','Intercept',
 	'Beta_1','p') # THINGS TO KEEP TRACK OF
 inits<-function(){
@@ -11,123 +15,89 @@ inits<-function(){
 	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'Beta_1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
    }
-ni<-750*1000
-nb<-300*1000
-# MODEL 1: STAGE ONLY
-out <- jags(data=mod_dat,
+out <- jags.parallel(data=mod_dat,
 	inits=inits,
 	parameters=params,	
 	model.file=mod_01,
 	n.chains = 3,	
 	n.iter = ni,n.burnin = nb,   
-	n.thin=2,
+	n.thin=2, 
+    export_obj_names=c("ni","nb"),
 	working.directory=getwd())
-save(out, file="./output/out-model-01.Rdata")
-
-
-  # if the model does not converge, update it!
- # jagsfit.upd <- update(jagsfit, n.iter=100)
-  #print(jagsfit.upd)
- # print(jagsfit.upd, intervals=c(0.025, 0.5, 0.975))
-  #plot(jagsfit.upd)
+save(out, file="_output/out-model-01.Rdata")
+print("model 1 completed")
 
 
 
-# MODEL 2: TEMPERATURE ONLY
-out <- jags.parallel(data=mod_dat,
+# if the model does not converge, update it!
+# jagsfit.upd <- update(jagsfit, n.iter=100)
+# print(jagsfit.upd)
+# print(jagsfit.upd, intervals=c(0.025, 0.5, 0.975))
+# plot(jagsfit.upd)
+
+#######################################################################
+#
+#  MODEL 2: TEMPERATURE ONLY
+#
+#######################################################################
+params<- c("beta1",'beta2','Intercept',
+	'Beta_1','p') # THINGS TO KEEP TRACK OF
+inits<-function(){
+    list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'Beta_1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
+   }
+out <- jags(data=mod_dat,
 	inits=inits,
 	parameters=params,	
 	model.file=mod_02,
 	n.chains = 3,	
 	n.iter = ni,n.burnin = nb,     
-	n.thin=2,
+	n.thin=2, 
+    #export_obj_names=c("ni","nb"),
 	working.directory=getwd())
-save(out, file="./output/out-model-02.Rdata")
+save(out, file="_output/out-model-02.Rdata")
+print("model 2 completed")
 
 
-# MODEL 3: DEPTH MODEL
+#######################################################################
+#
+#  MODEL 3: DEPTH MODEL
+#
+#######################################################################
+params<- c("beta1",'beta2','Intercept',
+	'Beta_1','p') # THINGS TO KEEP TRACK OF
+inits<-function(){
+    list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'Beta_1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
+   }
 out <- jags.parallel(data=mod_dat,
 	inits=inits,
 	parameters=params,	
 	model.file=mod_03,
 	n.chains = 3,	
 	n.iter = ni,n.burnin = nb,  
-	n.thin=2,
+	n.thin=2, 
+    export_obj_names=c("ni","nb"),
 	working.directory=getwd())
-save(out, file="./output/out-model-03.Rdata")
+save(out, file="_output/out-model-03.Rdata")
+print("model 3 completed")
 
-# MODEL 4: CURRENT VELOCITY MODEL
-out <- jags.parallel(data=mod_dat,
-	inits=inits,
-	parameters=params,	
-	model.file=mod_03,
-	n.chains = 3,	
-	n.iter = ni,n.burnin = nb,   
-	n.thin=2,
-	working.directory=getwd())
-save(out, file="./output/out-model-03.Rdata")
+
+
+
 
 #######################################################################
 #
-#  TWO PARAMETER MODELS WITHOUT INTERACTIONS
+#  MODEL 4: TEMPERATURE, STAGE, AND INTERACTION
 #
 #######################################################################
-
-# MODEL 3: TEMPERATURE AND STAGE WITH PREDICTIONS AND HABITAT SELECTION
 params<- c("beta1",'beta2','Intercept',
-	'Beta_stage','Beta_temp','p',"sel") 
-stages<- scale(seq(-2,18,by=2),stage_mn,stage_sd)   
-temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
-selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
-selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
-mod_dat2<- mod_dat
-mod_dat2$n_sel<- nrow(selection)
-mod_dat2$select<- selection
-inits<-function(){
-    list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Beta_stage'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Beta_temp'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
-   }
-out <- jags(data=mod_dat2,
-	inits=inits,
-	parameters=params,	
-	model.file=mod_03_gof,
-	n.chains = 3,	
-	n.iter = ni,n.burnin = nb,     
-	n.thin=2,
-	working.directory=getwd())
-save(out, file="_output/out-model-03-gof.Rdata")
-
-### END 3
-
-
- 
-# MODEL 3: TEMPERATURE AND STAGE
-params<- c("beta1",'beta2','Intercept',
-	'Beta_stage','Beta_temp','p') 
-	
-inits<-function(){
-    list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Beta_stage'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Beta_temp'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
-   }
-out <- jags.parallel(data=mod_dat,
-	inits=inits,
-	parameters=params,	
-	model.file=mod_03,
-	n.chains = 3,	
-	n.iter = ni,n.burnin = nb,     
-	n.thin=2,
-	working.directory=getwd())
-save(out, file="./output/out-model-03.Rdata")
-
-# MODEL 4: TEMPERATURE, STAGE, AND INTERACTION
-params<- c("beta1",'beta2','Intercept',
-	'Beta_stage','Beta_temp','Beta_int','p')
+	'Beta_stage','Beta_temp','Beta_int',
+    'p')
 inits<-function()
 	{
     list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
@@ -143,20 +113,26 @@ out <- jags.parallel(data=mod_dat,
 	model.file=mod_04,
 	n.chains = 3,	
 	n.iter = ni,n.burnin = nb,     
-	n.thin=2,
+	n.thin=2, 
+    export_obj_names=c("ni","nb"),
 	working.directory=getwd())
-save(out, file="./output/out-model-04.Rdata")
+save(out, file="_output/out-model-04.Rdata")
+print("model 4 completed")
 
 
-# MODEL 5: TEMPERATURE ONLY
+
+#######################################################################
+#
+# MODEL 5: TEMPERATURE ONLY 
+#
+#######################################################################
 params<- c("beta1",'beta2','Intercept',
 	'Beta_temp','p') # THINGS TO KEEP TRACK OF
 inits<-function(){
     list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'Intercept'=c(NA,runif(6)),
-	'Beta_temp'=c(NA,runif(6)))
- 
+	'Beta_temp'=c(NA,runif(6))) 
    }
 out <- jags.parallel(data=mod_dat,
 	inits=inits,
@@ -164,11 +140,19 @@ out <- jags.parallel(data=mod_dat,
 	model.file=mod_05,
 	n.chains = 3,	
 	n.iter = ni,n.burnin = nb,     
-	n.thin=2,
+	n.thin=2, 
+    export_obj_names=c("ni","nb"),
 	working.directory=getwd())
-save(out, file="./output/out-model-05.Rdata")
+save(out, file="_output/out-model-05.Rdata")
+print("model 5 completed")
 
-# MODEL 6: STAGE ONLY
+
+
+#######################################################################
+#
+#  MODEL 6: STAGE ONLY
+#
+#######################################################################
 params<- c("beta1",'beta2','Intercept',
 	'Beta_stage','p') # THINGS TO KEEP TRACK OF
 inits<-function(){
@@ -183,11 +167,19 @@ out <- jags.parallel(data=mod_dat,
 	model.file=mod_06,
 	n.chains = 3,	
 	n.iter = ni,n.burnin = nb,     
-	n.thin=2,
+	n.thin=2, 
+    export_obj_names=c("ni","nb"),
 	working.directory=getwd())
-save(out, file="./output/out-model-06.Rdata")
+save(out, file="_output/out-model-06.Rdata")
+print("model 6 completed")
 
-# MODEL 7: TEMPERATURE AND STAGE
+
+
+#######################################################################
+#
+# MODEL 7: TEMPERATURE AND STAGE 
+#
+#######################################################################
 params<- c("beta1",'beta2','Intercept',
 	'Beta_stage','Beta_temp','p') 
 inits<-function(){
@@ -203,11 +195,18 @@ out <- jags.parallel(data=mod_dat,
 	model.file=mod_07,
 	n.chains = 3,	
 	n.iter = ni,n.burnin = nb,     
-	n.thin=2,
+	n.thin=2, 
+    export_obj_names=c("ni","nb"),
 	working.directory=getwd())
-save(out, file="./output/out-model-07.Rdata")
+save(out, file="_output/out-model-07.Rdata")
+print("model 7 completed")
 
-# MODEL 8: TEMPERATURE, STAGE, AND INTERACTION
+
+#######################################################################
+#
+# MODEL 8: TEMPERATURE, STAGE, AND INTERACTION 
+#
+#######################################################################
 params<- c("beta1",'beta2','Intercept',
 	'Beta_stage','Beta_temp','Beta_int','p')
 inits<-function(){
@@ -224,6 +223,9 @@ out <- jags.parallel(data=mod_dat,
 	model.file=mod_08,
 	n.chains = 3,	
 	n.iter = ni,n.burnin = nb,     
-	n.thin=2,
+	n.thin=2, 
+    export_obj_names=c("ni","nb"),
 	working.directory=getwd())
-save(out, file="./output/out-model-08.Rdata")
+save(out, file="_output/out-model-08.Rdata")
+print("model 8 completed")
+

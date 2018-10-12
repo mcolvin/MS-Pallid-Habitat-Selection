@@ -9,6 +9,7 @@
 
 ## mod_03a: temperature and stage model with segment effect
 ## mod_04a: temperature:stage interaction model with segment effect
+
 ## mod_05: temperature model without segment effect
 ## mod_06: stage model without segment effect
 ## mod_07: temperature and stage model without segment effect
@@ -738,7 +739,7 @@ mod_05<- function()
 		{
 		for(habitat in 1:nhabs)
 			{
-			z_hat[i,habitat]<- beta1[XX[i,3],habitat]+beta2[XX[i,3],habitat]*XX[i,2]
+			z_hat[i,habitat]<- beta1[XX[i,1],habitat]+beta2[XX[i,1],habitat]*XX[i,2]
 			z_hat_exp[i,habitat]<-  exp(z_hat[i,habitat])
 			# CONVERT TO PROBABILITY
 			avail_hat[i,habitat]<-z_hat_exp[i,habitat]/sum(z_hat_exp[i,1:nhabs])
@@ -844,7 +845,7 @@ mod_06<- function()
 		{
 		for(habitat in 1:nhabs)
 			{
-			z_hat[i,habitat]<- beta1[XX[i,3],habitat]+beta2[XX[i,3],habitat]*XX[i,2]
+			z_hat[i,habitat]<- beta1[XX[i,1],habitat]+beta2[XX[i,1],habitat]*XX[i,2]
 			z_hat_exp[i,habitat]<-  exp(z_hat[i,habitat])
 			# CONVERT TO PROBABILITY
 			avail_hat[i,habitat]<-z_hat_exp[i,habitat]/sum(z_hat_exp[i,1:nhabs])
@@ -949,7 +950,7 @@ mod_07<- function()
 		{
 		for(habitat in 1:nhabs)
 			{
-			z_hat[i,habitat]<- beta1[XX[i,3],habitat]+beta2[XX[i,3],habitat]*XX[i,2]
+			z_hat[i,habitat]<- beta1[XX[i,1],habitat]+beta2[XX[i,1],habitat]*XX[i,2]
 			z_hat_exp[i,habitat]<-  exp(z_hat[i,habitat])
 			# CONVERT TO PROBABILITY
 			avail_hat[i,habitat]<-z_hat_exp[i,habitat]/sum(z_hat_exp[i,1:nhabs])
@@ -1062,7 +1063,7 @@ mod_08<- function()
 		{
 		for(habitat in 1:nhabs)
 			{
-			z_hat[i,habitat]<- beta1[XX[i,3],habitat]+beta2[XX[i,3],habitat]*XX[i,2]
+			z_hat[i,habitat]<- beta1[XX[i,1],habitat]+beta2[XX[i,1],habitat]*XX[i,2]
 			z_hat_exp[i,habitat]<-  exp(z_hat[i,habitat])
 			# CONVERT TO PROBABILITY
 			avail_hat[i,habitat]<-z_hat_exp[i,habitat]/sum(z_hat_exp[i,1:nhabs])
