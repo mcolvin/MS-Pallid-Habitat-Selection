@@ -12,9 +12,7 @@ _literature/
 *.pptx
 *.SESSION
 *.potx
-*.csv
-*.xlsx
-*.xls
+
 *.Rdata
 
 # Windows image file caches
