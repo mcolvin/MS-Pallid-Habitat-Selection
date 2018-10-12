@@ -48,14 +48,14 @@ inits<-function(){
 	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'Beta_1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
    }
-out <- jags(data=mod_dat,
+out <- jags.parallel(data=mod_dat,
 	inits=inits,
 	parameters=params,	
 	model.file=mod_02,
 	n.chains = 3,	
 	n.iter = ni,n.burnin = nb,     
 	n.thin=2, 
-    #export_obj_names=c("ni","nb"),
+    export_obj_names=c("ni","nb"),
 	working.directory=getwd())
 save(out, file="_output/out-model-02.Rdata")
 print("model 2 completed")
