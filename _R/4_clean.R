@@ -56,7 +56,8 @@ mod_dat<- list(total=apply(avail[,-c(1,2)],1,sum),
 	nobs1=nrow(avail),
 	# HABITAT SELCTION DATA
 	nobs2=nrow(XX),
-    XX=XX)
+    XX=XX,
+    hab=XX[,6])
 
 mod_dat$X[,2]<- scale(mod_dat$X[,2],stage_mn,stage_sd) # SCALE STAGE TO LINK TO AVIALBILITY MODEL
 
