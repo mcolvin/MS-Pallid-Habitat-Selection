@@ -1,5 +1,5 @@
-ni<-75*1000
-nb<-30*1000
+ni<-75*500
+nb<-30*500
 
 
 #######################################################################
@@ -74,6 +74,7 @@ inits<-function(){
 	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'Beta_1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
    }
+out<-NULL
 out <- jags.parallel(data=mod_dat,
 	inits=inits,
 	parameters=params,	
@@ -92,7 +93,7 @@ print("model 3 completed")
 
 #######################################################################
 #
-#  MODEL 4: TEMPERATURE, STAGE, AND INTERACTION
+#  MODEL 4: KPH
 #
 #######################################################################
 params<- c("beta1",'beta2','Intercept',
@@ -161,6 +162,7 @@ inits<-function(){
 	'Intercept'=c(NA,runif(6)),
 	'Beta_stage'=c(NA,runif(6)))
    }
+out<-NULL
 out <- jags.parallel(data=mod_dat,
 	inits=inits,
 	parameters=params,	
@@ -189,6 +191,7 @@ inits<-function(){
 	'Beta_stage'=c(NA,runif(6)), 
 	'Beta_temp'=c(NA,runif(6)))
    }
+out<-NULL
 out <- jags.parallel(data=mod_dat,
 	inits=inits,
 	parameters=params,	

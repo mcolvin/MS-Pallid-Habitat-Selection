@@ -755,7 +755,7 @@ mod_05<- function()
 		for(habitat in 1:nhabs)
 			{
 			zz[i,habitat]<-Intercept[habitat]+
-				Beta_temp[habitat]*XX[i,1]+
+				Beta_temp[habitat]*XX[i,3]+
 				log(avail_hat[i,habitat])# PREDICTED PROP. AVAILABLE GIVEN STAGE
 			zz_exp[i,habitat]<- exp(zz[i,habitat])
 			pp[i,habitat]<-zz_exp[i,habitat]/sum(zz_exp[i,1:nhabs])
@@ -967,7 +967,7 @@ mod_07<- function()
 			{
 			zz[i,habitat]<-Intercept[habitat]+
 				Beta_stage[habitat]*XX[i,2]+
-				Beta_temp[habitat]*XX[i,1]+
+				Beta_temp[habitat]*XX[i,3]+
 				log(avail_hat[i,habitat])# PREDICTED PROP. AVAILABLE GIVEN STAGE
 			zz_exp[i,habitat]<- exp(zz[i,habitat])
 			pp[i,habitat]<-zz_exp[i,habitat]/sum(zz_exp[i,1:nhabs])
@@ -1080,8 +1080,8 @@ mod_08<- function()
 			{
 			zz[i,habitat]<-Intercept[habitat]+
 				Beta_stage[habitat]*XX[i,2]+
-				Beta_temp[habitat]*XX[i,1]+
-				Beta_int[habitat]*XX[i,1]*XX[i,2]+
+				Beta_temp[habitat]*XX[i,3]+
+				Beta_int[habitat]*XX[i,5]*XX[i,2]+
 				log(avail_hat[i,habitat])# PREDICTED PROP. AVAILABLE GIVEN STAGE
 			zz_exp[i,habitat]<- exp(zz[i,habitat])
 			pp[i,habitat]<-zz_exp[i,habitat]/sum(zz_exp[i,1:nhabs])
