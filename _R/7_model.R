@@ -400,7 +400,7 @@ mod_04<- function()
 	
 	
 	# BEGIN HABITAT SELECTION MODEL
-		## PROCESS MODEL
+	## PROCESS MODEL
 	for(i in 1:nobs2)
 		{
 		for(habitat in 1:nhabs)
@@ -754,8 +754,8 @@ mod_05<- function()
 		{
 		for(habitat in 1:nhabs)
 			{
-			zz[i,habitat]<-Intercept[habitat]+
-				Beta_temp[habitat]*XX[i,3]+
+			zz[i,habitat]<-Intercept[XX[i,1],habitat]+
+				Beta_temp[XX[i,1],habitat]*XX[i,3]+
 				log(avail_hat[i,habitat])# PREDICTED PROP. AVAILABLE GIVEN STAGE
 			zz_exp[i,habitat]<- exp(zz[i,habitat])
 			pp[i,habitat]<-zz_exp[i,habitat]/sum(zz_exp[i,1:nhabs])
@@ -772,22 +772,24 @@ mod_05<- function()
 	# PRIORS		
 	## BASELINE CONSTRAIN TO BE 0	
 	### INTERCEPT
+	for(i in 1:2)
+		{
+	Intercept[i,1]<-0
+	Intercept[i,2]~dnorm(0,0.4)
+	Intercept[i,3]~dnorm(0,0.4)
+	Intercept[i,4]~dnorm(0,0.4)
+	Intercept[i,5]~dnorm(0,0.4)
+	Intercept[i,6]~dnorm(0,0.4)
+	Intercept[i,7]~dnorm(0,0.4)
 
-	Intercept[1]<-0
-	Intercept[2]~dnorm(0,0.4)
-	Intercept[3]~dnorm(0,0.4)
-	Intercept[4]~dnorm(0,0.4)
-	Intercept[5]~dnorm(0,0.4)
-	Intercept[6]~dnorm(0,0.4)
-	Intercept[7]~dnorm(0,0.4)
-
-	Beta_temp[1]<-0
-	Beta_temp[2]~dnorm(0,0.4)	
-	Beta_temp[3]~dnorm(0,0.4)
-	Beta_temp[4]~dnorm(0,0.4)
-	Beta_temp[5]~dnorm(0,0.4)
-	Beta_temp[6]~dnorm(0,0.4)
-	Beta_temp[7]~dnorm(0,0.4)
+	Beta_temp[i,1]<-0
+	Beta_temp[i,2]~dnorm(0,0.4)	
+	Beta_temp[i,3]~dnorm(0,0.4)
+	Beta_temp[i,4]~dnorm(0,0.4)
+	Beta_temp[i,5]~dnorm(0,0.4)
+	Beta_temp[i,6]~dnorm(0,0.4)
+	Beta_temp[i,7]~dnorm(0,0.4)
+    }
 
 	# END HABITAT SELECITON MODEL
 }

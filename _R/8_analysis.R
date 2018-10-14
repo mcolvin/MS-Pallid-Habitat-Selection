@@ -1,5 +1,5 @@
-ni<-75*500
-nb<-30*500
+ni<-50*500
+nb<-20*500
 
 
 #######################################################################
@@ -132,8 +132,8 @@ params<- c("beta1",'beta2','Intercept',
 inits<-function(){
     list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Intercept'=c(NA,runif(6)),
-	'Beta_temp'=c(NA,runif(6))) 
+	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
+	'Beta_temp'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE)) 
    }
 out <- jags.parallel(data=mod_dat,
 	inits=inits,
