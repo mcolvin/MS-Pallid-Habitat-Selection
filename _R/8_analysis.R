@@ -63,24 +63,25 @@ print("model 2 completed")
 
 #######################################################################
 #
-#  MODEL 3: DEPTH MODEL
+#  MODEL 3: TEMPERATURE AND STAGE 
 #
 #######################################################################
 params<- c("beta1",'beta2','Intercept',
-	'Beta_1','p') # THINGS TO KEEP TRACK OF
+	'Beta_stage','Beta_temp','p') 
 inits<-function(){
     list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Beta_1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
+	'Beta_stage'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE), 
+	'Beta_temp'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
    }
 out<-NULL
 out <- jags.parallel(data=mod_dat,
 	inits=inits,
 	parameters=params,	
-	model.file=mod_03,
+	model.file=mod_07,
 	n.chains = 3,	
-	n.iter = ni,n.burnin = nb,  
+	n.iter = ni,n.burnin = nb,     
 	n.thin=2, 
     export_obj_names=c("ni","nb"),
 	working.directory=getwd())
@@ -93,31 +94,28 @@ print("model 3 completed")
 
 #######################################################################
 #
-#  MODEL 4: KPH
+#  MODEL 4: TEMPERATURE, STAGE, AND INTERACTION WITH SEGMENT EFFECT
 #
 #######################################################################
 params<- c("beta1",'beta2','Intercept',
-	'Beta_stage','Beta_temp','Beta_int',
-    'p')
-inits<-function()
-	{
+	'Beta_stage','Beta_temp','Beta_int','p')
+inits<-function(){
     list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'Beta_stage'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE), 
 	'Beta_temp'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE), 
 	'Beta_int'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
-	}
+  }
 out <- jags.parallel(data=mod_dat,
 	inits=inits,
 	parameters=params,	
-	model.file=mod_04,
+	model.file=mod_08,
 	n.chains = 3,	
 	n.iter = ni,n.burnin = nb,     
 	n.thin=2, 
     export_obj_names=c("ni","nb"),
 	working.directory=getwd())
-save(out, file="_output/out-model-04.Rdata")
 print("model 4 completed")
 
 

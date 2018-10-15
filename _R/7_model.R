@@ -3,12 +3,8 @@
 # BUGS MODELS
 ## mod_01: stage model with segment effect
 ## mod_02: temperature model with segment effect
-## mod_03: depth model with segment effect
-## mod_04: current velocity model with segment effect
-
-
-## mod_03a: temperature and stage model with segment effect
-## mod_04a: temperature:stage interaction model with segment effect
+## mod_03: temperature and stage model with segment effect
+## mod_04: temperature:stage interaction model with segment effect
 
 ## mod_05: temperature model without segment effect
 ## mod_06: stage model without segment effect
@@ -231,7 +227,7 @@ mod_02<- function()
 }
 # end model
 
-mod_03<- function()
+mod_03old<- function()
 	{
 	## PROCESS MODEL
 	for(i in 1:nobs1)
@@ -338,7 +334,7 @@ mod_03<- function()
 	# END HABITAT SELECITON MODEL
 }
 # end model
-mod_04<- function()
+mod_04old<- function()
 	{
 	## PROCESS MODEL
 	for(i in 1:nobs1)
@@ -448,7 +444,7 @@ mod_04<- function()
 
 ## UPDATED TO HERE
 
-mod_03a<- function()
+mod_03<- function()
 	{
 	## PROCESS MODEL
 	for(i in 1:nobs1)
@@ -563,7 +559,7 @@ mod_03a<- function()
 	# END HABITAT SELECITON MODEL
 }
 # end model
-mod_04a<- function()
+mod_04<- function()
 	{
 	## PROCESS MODEL
 	for(i in 1:nobs1)
@@ -630,10 +626,10 @@ mod_04a<- function()
 		{
 		for(habitat in 1:nhabs)
 			{
-			zz[i,habitat]<-Intercept[XX[i,3],habitat]+
-				Beta_stage[XX[i,3],habitat]*XX[i,2]+
-				Beta_temp[XX[i,3],habitat]*XX[i,1]+
-				Beta_int[XX[i,3],habitat]*XX[i,1]*XX[i,2]+
+			zz[i,habitat]<-Intercept[XX[i,1],habitat]+
+				Beta_stage[XX[i,1],habitat]*XX[i,2]+
+				Beta_temp[XX[i,1],habitat]*XX[i,3]+
+				Beta_int[XX[i,1],habitat]*XX[i,5]*XX[i,2]+
 				log(avail_hat[i,habitat])# PREDICTED PROP. AVAILABLE GIVEN STAGE
 			zz_exp[i,habitat]<- exp(zz[i,habitat])
 			pp[i,habitat]<-zz_exp[i,habitat]/sum(zz_exp[i,1:nhabs])
@@ -650,40 +646,40 @@ mod_04a<- function()
 	# PRIORS		
 	## BASELINE CONSTRAIN TO BE 0	
 	### INTERCEPT
-	for(i in 1:2)
-		{
-		Intercept[i,1]<-0
-		Intercept[i,2]~dnorm(0,0.4)
-		Intercept[i,3]~dnorm(0,0.4)
-		Intercept[i,4]~dnorm(0,0.4)
-		Intercept[i,5]~dnorm(0,0.4)
-		Intercept[i,6]~dnorm(0,0.4)
-		Intercept[i,7]~dnorm(0,0.4)
+    for(i in 1:2)
+        {
+	Intercept[i,1]<-0
+	Intercept[i,2]~dnorm(0,0.4)
+	Intercept[i,3]~dnorm(0,0.4)
+	Intercept[i,4]~dnorm(0,0.4)
+	Intercept[i,5]~dnorm(0,0.4)
+	Intercept[i,6]~dnorm(0,0.4)
+	Intercept[i,7]~dnorm(0,0.4)
 
-		Beta_stage[i,1]<-0
-		Beta_stage[i,2]~dnorm(0,0.4)	
-		Beta_stage[i,3]~dnorm(0,0.4)
-		Beta_stage[i,4]~dnorm(0,0.4)
-		Beta_stage[i,5]~dnorm(0,0.4)
-		Beta_stage[i,6]~dnorm(0,0.4)
-		Beta_stage[i,7]~dnorm(0,0.4)
-		
-		Beta_temp[i,1]<-0
-		Beta_temp[i,2]~dnorm(0,0.4)	
-		Beta_temp[i,3]~dnorm(0,0.4)
-		Beta_temp[i,4]~dnorm(0,0.4)
-		Beta_temp[i,5]~dnorm(0,0.4)
-		Beta_temp[i,6]~dnorm(0,0.4)
-		Beta_temp[i,7]~dnorm(0,0.4)
-		
-		Beta_int[i,1]<-0
-		Beta_int[i,2]~dnorm(0,0.4)	
-		Beta_int[i,3]~dnorm(0,0.4)
-		Beta_int[i,4]~dnorm(0,0.4)
-		Beta_int[i,5]~dnorm(0,0.4)
-		Beta_int[i,6]~dnorm(0,0.4)
-		Beta_int[i,7]~dnorm(0,0.4)
-		}
+	Beta_stage[i,1]<-0
+	Beta_stage[i,2]~dnorm(0,0.4)	
+	Beta_stage[i,3]~dnorm(0,0.4)
+	Beta_stage[i,4]~dnorm(0,0.4)
+	Beta_stage[i,5]~dnorm(0,0.4)
+	Beta_stage[i,6]~dnorm(0,0.4)
+	Beta_stage[i,7]~dnorm(0,0.4)
+	
+	Beta_temp[i,1]<-0
+	Beta_temp[i,2]~dnorm(0,0.4)	
+	Beta_temp[i,3]~dnorm(0,0.4)
+	Beta_temp[i,4]~dnorm(0,0.4)
+	Beta_temp[i,5]~dnorm(0,0.4)
+	Beta_temp[i,6]~dnorm(0,0.4)
+	Beta_temp[i,7]~dnorm(0,0.4)
+	
+	Beta_int[i,1]<-0
+	Beta_int[i,2]~dnorm(0,0.4)	
+	Beta_int[i,3]~dnorm(0,0.4)
+	Beta_int[i,4]~dnorm(0,0.4)
+	Beta_int[i,5]~dnorm(0,0.4)
+	Beta_int[i,6]~dnorm(0,0.4)
+	Beta_int[i,7]~dnorm(0,0.4)
+    }
 	# END HABITAT SELECITON MODEL
 }
 # end model
