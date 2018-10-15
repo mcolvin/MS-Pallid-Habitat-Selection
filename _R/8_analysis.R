@@ -119,6 +119,11 @@ out <- jags.parallel(data=mod_dat,
 print("model 4 completed")
 
 
+#######################################################################
+#
+#  MODELS 5 TO 8 ARE THE SAME AS ABOVE BUT DO NOT HAVE A REACH EFFECT
+#
+#######################################################################
 
 #######################################################################
 #
@@ -130,8 +135,8 @@ params<- c("beta1",'beta2','Intercept',
 inits<-function(){
     list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Beta_temp'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE)) 
+	'Intercept'=c(NA,runif(6)),
+	'Beta_temp'=c(NA,runif(6)))
    }
 out <- jags.parallel(data=mod_dat,
 	inits=inits,
@@ -157,8 +162,8 @@ params<- c("beta1",'beta2','Intercept',
 inits<-function(){
     list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Beta_stage'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
+	'Intercept'=c(NA,runif(6)),
+	'Beta_stage'=c(NA,runif(6)))
    }
 out<-NULL
 out <- jags.parallel(data=mod_dat,
@@ -185,9 +190,9 @@ params<- c("beta1",'beta2','Intercept',
 inits<-function(){
     list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Beta_stage'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE), 
-	'Beta_temp'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
+	'Intercept'=c(NA,runif(6)),
+	'Beta_stage'=c(NA,runif(6)), 
+	'Beta_temp'=c(NA,runif(6)))
    }
 out<-NULL
 out <- jags.parallel(data=mod_dat,
@@ -213,10 +218,10 @@ params<- c("beta1",'beta2','Intercept',
 inits<-function(){
     list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Beta_stage'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE), 
-	'Beta_temp'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE), 
-	'Beta_int'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
+	'Intercept'=c(NA,runif(6)),
+	'Beta_stage'=c(NA,runif(6)), 
+	'Beta_temp'=c(NA,runif(6)), 
+	'Beta_int'=c(NA,runif(6)))
   }
 out <- jags.parallel(data=mod_dat,
 	inits=inits,
@@ -230,29 +235,3 @@ out <- jags.parallel(data=mod_dat,
 save(out, file="_output/out-model-08.Rdata")
 print("model 8 completed")
 
-
-
-#######################################################################
-#
-# MODEL 1new: STAGE (modified from model 8)
-#
-#######################################################################
-params<- c("beta1",'beta2','Intercept',
-	'Beta_stage','p')
-inits<-function(){
-    list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Intercept'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
-	'Beta_stage'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
-  }
-out <- jags.parallel(data=mod_dat,
-	inits=inits,
-	parameters=params,	
-	model.file=mod_01new,
-	n.chains = 3,	
-	n.iter = ni,n.burnin = nb,     
-	n.thin=2, 
-    export_obj_names=c("ni","nb"),
-	working.directory=getwd())
-save(out, file="_output/out-model-01new.Rdata")
-print("model 1new completed")
