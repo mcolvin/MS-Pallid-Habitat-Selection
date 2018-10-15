@@ -27,8 +27,8 @@ zz[grep(zz,"11")]
 
 
 ```{r}
-ni<-75*1000
-nb<-30*1000
+ni<-75*500
+nb<-30*500
 #######################################################################
 #
 #  MODEL 3: TEMPERATURE AND STAGE WITH PREDICTIONS AND HABITAT SELECTION
