@@ -36,13 +36,6 @@ nb<-30*500
 #######################################################################
 params<- c("beta1",'beta2','Intercept',
 	'Beta_stage','Beta_temp','p',"sel") 
-stages<- scale(seq(-2,18,by=2),stage_mn,stage_sd)   
-temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
-selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
-selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
-mod_dat2<- mod_dat
-mod_dat2$n_sel<- nrow(selection)
-mod_dat2$select<- selection
 inits<-function(){
     list('beta1'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'beta2'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),

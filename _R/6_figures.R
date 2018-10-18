@@ -28,7 +28,7 @@ if(n==3)
 	#color<-rev(brewer.pal(7,"Set2"))    
 	#color<- (grey(1/c(1:8))[-1])
 	## CATFISH POINT
-	xx<- data.frame(stage=seq(-2,12,0.1))
+	xx<- data.frame(stage=seq(-0.37,11.6,0.1))
 	## SCALE STAGE 
 	xx$stage_scaled<- scale(xx$stage, center = mean(dat$Stage.m), scale = sd(dat$Stage.m))
 	
@@ -68,7 +68,7 @@ if(n==3)
 	
 	
 	## TARA TO VICKSBURG
-	xx<- data.frame(stage=seq(0,14,0.1))
+	xx<- data.frame(stage=seq(-0.45,10.7,0.1))
 	## SCALE STAGE 
 	xx$stage_scaled<- scale(xx$stage, center = mean(dat$Stage.m), scale = sd(dat$Stage.m))
 
@@ -114,7 +114,7 @@ if(n==4)## 4
 	# temp -1.6,1.6
 	# stage -2.2,2
 	preddat<- expand.grid(temp=sort(c(seq(4,32,0.25),temp_mn)),
-		stage=sort(c(seq(-2,12,0.1),stage_mn)),loc=1)
+		stage=sort(c(seq(-0.37,11.6,0.1),stage_mn)),loc=1)
 	preddat$temp_scaled<- scale(preddat$temp, center = temp_mn, scale = temp_sd)
 	preddat$stage_scaled<- scale(preddat$stage, center =stage_mn, scale = stage_sd)
 	
@@ -145,15 +145,7 @@ if(n==4)## 4
 		})
 	y_cum<- t(apply(y,2,cumsum)	)		
 	y<- t(y)
-
-	#color<- rev(brewer.pal(7,"Set2"))
 	par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
-	#matplot(newdat$stage,y,type='l',ylim=c(0,0.8),las=1, ylab="",
-	#	main="",col=color,lty=1,lwd=3,xaxt='n')
-	#axis(1,at=axTicks(1),labels=FALSE)
-	#legend("topright",legend=c('MC','SND','WD','NAT','REV','SC','ILT'),
-	#	lwd=4,lty=1,col=color,bty='n', horiz=TRUE,cex=0.8,xjust=0.5)	
-	
 	matplot(newdat$stage,y_cum,type='n',ylim=c(0,1),las=1, ylab="",
 		col=color,lty=1,lwd=2,main="Catfish Point",xaxt='n')
     axis(1,at=axTicks(1),labels=TRUE)
@@ -166,7 +158,7 @@ if(n==4)## 4
 
     ## VICKSBURG
     	preddat<- expand.grid(temp=sort(c(seq(4,32,0.25),temp_mn)),
-		stage=sort(c(seq(-2,12,0.1),stage_mn)),loc=2)
+		stage=sort(c(seq(-0.45,10.7,0.1),stage_mn)),loc=2)
 	preddat$temp_scaled<- scale(preddat$temp, center = temp_mn, scale = temp_sd)
 	preddat$stage_scaled<- scale(preddat$stage, center =stage_mn, scale = stage_sd)
 	b0<- M03$BUGSoutput$mean$beta1
@@ -207,7 +199,7 @@ if(n==4)## 4
 	#mtext(side=3, "TARA TO VICKSBURG", line=-0.75,outer=TRUE,cex=1.5)
 	mtext(side=1, "Stage (m)", line=0,outer=TRUE)
 	mtext(side=2, "Cumulative probability of use", line=-0.75,outer=TRUE)
-    	legend(1.5,0.3,legend=c('Main channel',
+    	legend(2.2,0.3,legend=c('Main channel',
         'Sandbar',
         'Wing dike',
         'Natural bank','Revetted bank',
@@ -318,28 +310,28 @@ par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 if(n==6)
 	{
 	load("./_output/out-model-03-gof.Rdata")
-	#png(file = "_output/Rplot3.png", bg = "transparent", type = c("cairo"), width=2000, height=2000, res=300)
-   
-	selection<- expand.grid(temp=seq(-2,2,by=0.5),stage=0,loc=c(1,2))
-	selection<- rbind(selection,
-		expand.grid(temp=0,stage=seq(-2,2,by=0.5),loc=c(1,2)))
-	selection$index<- c(1:nrow(selection))
-	sel_mn<- matrix(out$BUGSoutput$summary[
+
+    stages<- scale(seq(-2,18,by=2),stage_mn,stage_sd)   
+    temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
+    selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
+    selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
+	selection$temp_raw<- selection$temp*temp_sd+temp_mn
+	selection$stage_raw<- selection$stage*stage_sd+stage_mn	
+    sel_mn<- matrix(out$BUGSoutput$summary[
 		grep("sel",rownames(out$BUGSoutput$summary)),1],ncol=7,byrow=FALSE)
 	sel_lci<-  matrix(out$BUGSoutput$summary[
 		grep("sel",rownames(out$BUGSoutput$summary)),3],ncol=7,byrow=FALSE)
 	sel_uci<-  matrix(out$BUGSoutput$summary[
 		grep("sel",rownames(out$BUGSoutput$summary)),7],ncol=7,byrow=FALSE)
-	selection$temp_raw<- selection$temp*temp_sd+temp_mn
-	selection$stage_raw<- selection$stage*stage_sd+stage_mn
-	sel_temp<-selection[1:18,]
-	sel_mn_temp<- sel_mn[1:18,]
-	sel_lci_temp<- sel_lci[1:18,]
-	sel_uci_temp<- sel_uci[1:18,]
-	sel_stage<-selection[19:36,]
-	sel_mn_stage<- sel_mn[19:36,]
-	sel_lci_stage<- sel_lci[19:36,]
-	sel_uci_stage<- sel_uci[19:36,]
+
+	sel_temp<-selection[1:14,]
+	sel_mn_temp<- sel_mn[1:14,]
+	sel_lci_temp<- sel_lci[1:14,]
+	sel_uci_temp<- sel_uci[1:14,]
+	sel_stage<-selection[15:36,]
+	sel_mn_stage<- sel_mn[15:36,]
+	sel_lci_stage<- sel_lci[15:36,]
+	sel_uci_stage<- sel_uci[15:36,]
 	par(mfrow=c(7,2),mar=c(1,3,0,0),oma=c(3,2,1,1))
 	trans_red<- rgb(228,16,16,alpha=40,maxColorValue=255)
 	trans_blu<- rgb(0,0,255,alpha=40,maxColorValue=255)
@@ -355,7 +347,7 @@ if(n==6)
 		plot(stage~temp_raw,sel_temp,
 			type='n',
 			ylim=c(miny,maxy),
-			xlim=c(-1,35),
+			xlim=c(5,35),
 			las=1,
 			ylab="Selection",
 			xlab=ifelse(hab==7,xlabs[2],xlabs[1]),
@@ -383,9 +375,11 @@ if(n==6)
 		miny<- min(unlist(sel_lci_stage[,hab]))
 		xlabs<- c("","Stage")	
 		xaxis<- c("n","s")
+        #sel_stage<-subset(sel_stage,stage_raw>=-0.45 & stage_raw<=11.6)
 		plot(stage~stage_raw,sel_stage,
 			type='n',
 			ylim=c(miny,maxy),
+            #xlim=c(-0.45,11.6),
 			las=1,
 			ylab="Selection",
 			xlab=ifelse(hab==7,xlabs[2],xlabs[1]),
@@ -419,9 +413,6 @@ if(n=="S2")
     load("_output/out-model-03-gof.Rdata")
     stages<- scale(seq(-2,18,by=2),stage_mn,stage_sd)   
     temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
-    
-    #temps<-seq(-2,2,by=0.5)#scale(seq(0,35,5),temp_mn,temp_sd) 
-    #stages<-seq(-2,2,by=0.5)#scale(seq(-1,12,1),stage_mn,stage_sd)    
 	selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
 	selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
 	selection$index<- c(1:nrow(selection))
@@ -469,67 +460,50 @@ if(n=="S2")
 		panLab(habs_full[kk])
         rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==1,]$TempC)))
         rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==2,]$TempC)),col='red')
-		# add density plot of detections
-		#par(new=TRUE)
-		#dns1<-density(na.omit(dat[dat$habitat==kk& dat$loc==1,]$TempC))
-		#dns2<-density(na.omit(dat[dat$habitat==kk& dat$loc==2,]$TempC))
-		#plot(dns1,col="lightgrey",main="",xlim=c(-2,14),xaxt='n',yaxt='n',
-		#	ylim=c(0,max(c(dns1$y,dns2$y))*1.4),lty=1,lwd=1)
-		#points(dns2,lwd=1,lty=2,col="lightgrey",type='l')
 		mtext(side=1, "Temperature (C)",outer=TRUE,line=0.5,cex=1.3)
 		mtext(side=2, "Habitat selection",outer=TRUE,line=0.5,cex=1.3)
 		}
-	
-	#plot.new();
-	#legend(x=0,y=0.75,
-	#	legend=c("Catfish Point","","Vicksburg",""),
-	#	pch=c(19,NA,17,NA),lty=c(NA,1,NA,2),col=c('black','lightgrey'),cex=1.3)
+
 	}	
 
 if(n=="S1")
     {## Stage
-
     load("_output/out-model-03-gof.Rdata")
+    stages<- scale(seq(-2,18,by=2),stage_mn,stage_sd)   
+    temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
+	selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
+	selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
+	selection$index<- c(1:nrow(selection))
+	sel_mn<- matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),1],ncol=7,byrow=FALSE)
+	sel_lci<-  matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),3],ncol=7,byrow=FALSE)
+	sel_uci<-  matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),7],ncol=7,byrow=FALSE)
+	selection$temp_raw<- selection$temp*temp_sd+temp_mn
+	selection$stage_raw<- selection$stage*stage_sd+stage_mn	
 
-    tmp<- lapply(c(1:7),function(x)
-        {
-        pp<-mod_dat2$select
-        pp$habitat<-x
-        return(pp)
-        })
-    tmp<-do.call("rbind",tmp)
-    ## EXTRACT BCI FOR SELECTION ESTIMATES     
-    tmp$lbci<-c(apply(out$BUGSoutput$sims.list$sel,c(2,3),
-        quantile,probs = seq(0.025)) )
-    tmp$est<-c(apply(out$BUGSoutput$sims.list$sel,c(2,3),
-        mean) )
-    tmp$ubci<-c(apply(out$BUGSoutput$sims.list$sel,c(2,3),
-        quantile,probs = seq(0.975)))
 
-	tmp$temp_raw<- tmp$temp*temp_sd+temp_mn
-	tmp$stage_raw<- tmp$stage*stage_sd+stage_mn    
+	
 	par(mfrow=c(4,2),mar=c(2,3,0,0),oma=c(2,2,1,1))
 	for(kk in 1:7)
 		{
-		hab=kk	
-		selection<- subset(tmp,temp==0 & habitat==kk)
-        indx<-which(names(selection)%in%c("lbci","est","ubci"))
-		maxy<- (max(unlist(selection[,indx]))*1.1)
-		miny<- min(unlist(selection[,indx]))
+		hab=kk
+		indx<- which(selection$temp==0)		
+		maxy<- (max(unlist(sel_uci[,hab]))*1.1)
+		miny<- min(unlist(sel_lci[,hab]))
 		pdat<-subset(selection, loc==1 & temp==0)
 		xxx<-ifelse(kk %in% c(1,2,3,4,5),'n','s')
 		yyy<-ifelse(kk %in% c(2,4,6),'s','s')
-		plot(est~stage_raw,selection,type='n',ylim=c(miny,
+		plot(stage~stage_raw,selection,type='n',ylim=c(miny,
 			maxy),
-			xlim=c(-2,14),las=1,ylab="Selection",
-			xlab="Temperature",xaxt=xxx,yaxt=yyy)
+			xlim=c(-2,18),las=1,ylab="Selection",
+			xlab="Stage",xaxt=xxx,yaxt=yyy)
 		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=TRUE)}
 		if(kk %in% c(2,4,6)){axis(2, at=axTicks(2),labels=FALSE)}
-
-        points(pdat$stage_raw-0.1,pdat$est,pch=19)
-        segments(pdat$stage_raw-0.1,pdat$lbci,
-            pdat$stage-0.1,pdat$ubci)
-
+		for(i in 1:nrow(pdat))
+			{
+			ii<- pdat$index[i]
+			points(pdat$stage_raw[i]-0.1,sel_mn[ii,hab],pch=19)
+			segments(pdat$stage_raw[i]-0.1,sel_lci[ii,hab],pdat$stage_raw[i]-0.1,sel_uci[ii,hab])
+			}
 		pdat<-subset(selection, loc==2 & temp==0)
 		for(i in 1:nrow(pdat))
 			{
@@ -539,30 +513,14 @@ if(n=="S1")
 				sel_lci[ii,hab],
 				pdat$stage_raw[i]+0.1,
 				sel_uci[ii,hab],col='red')
-			}		
+            }		
 		abline(h=1,lty=3)
 		panLab(habs_full[kk])
         rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==1,]$Stage.m)))
         rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==2,]$Stage.m)),col='red')
-  
-        
-		# add density plot of detections
-		#par(new=TRUE)
-		#dns1<-density(na.omit(dat[dat$habitat==kk&dat$loc==1,]$Stage.m))
-		#dns2<-density(na.omit(dat[dat$habitat==kk&dat$loc==2,]$Stage.m))
-		#plot(dns1,col="lightgrey",main="",xlim=c(-2,14),xaxt='n',yaxt='n',
-		#	ylim=c(0,max(c(dns1$y,dns2$y))*1.4),lty=1,lwd=1)
-		#points(dns2,lwd=1,lty=2,col="lightgrey",type='l')
-		mtext(side=1, "Stage (m)",outer=TRUE,line=0.5,cex=1.3)
+		mtext(side=1, "Stage",outer=TRUE,line=0.5,cex=1.3)
 		mtext(side=2, "Habitat selection",outer=TRUE,line=0.5,cex=1.3)
 		}
-	
-	#plot.new();
-	#legend(x=0,y=0.75,
-	#	legend=c("Catfish Point","","Vicksburg",""),
-	#	pch=c(19,NA,17,NA),lty=c(NA,1,NA,2),col=c('black','lightgrey'),cex=1.3)
-	
-	#plot(Stage.m~TempC,dat, ylab="Stage",xlab="Temperature")
 	}
     
     }
