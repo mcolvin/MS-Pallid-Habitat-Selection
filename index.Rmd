@@ -43,13 +43,14 @@ inits<-function(){
 	'Beta_stage'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE),
 	'Beta_temp'=matrix(c(NA,NA,runif(2*6)),2,7,byrow=FALSE))
    }
-out <- jags(data=mod_dat2,
+out <- jags.parallel(data=mod_dat2,
 	inits=inits,
 	parameters=params,	
 	model.file=mod_03_gof,
 	n.chains = 3,	
 	n.iter = ni,n.burnin = nb,     
 	n.thin=2,
+	export_obj_names=c("ni","nb"),
 	working.directory=getwd())
 save(out, file="_output/out-model-03-gof.Rdata")
 
