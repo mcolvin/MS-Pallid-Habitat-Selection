@@ -53,7 +53,7 @@ if(n==3)
 
 	par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 	matplot(xx$stage,y_cum,type='n',las=1,xlab="",
-		ylab="",
+		ylab="",xlim=c(-1,12),
 		main="Catfish Point",xaxt='n',ylim=c(0,1))
 		axis(1,at=axTicks(1))
 	for(i in 7:1)
@@ -89,7 +89,7 @@ if(n==3)
 		return(p)
 		})
 	y_cum<- t(y_cum)
-	matplot(xx$stage,y_cum,type='n',las=1,xlab="",
+	matplot(xx$stage,y_cum,type='n',las=1,xlab="",xlim=c(-1,12),
 		ylab="",main="Vicksburg",xaxt='n',ylim=c(0,1))
 	axis(1,at=axTicks(1))
 	for(i in 7:1)
@@ -98,7 +98,7 @@ if(n==3)
 			c(y_cum[,i],rep(0,nrow(xx))),
 			col=color[i])		
 		}
-	legend(4,0.3,legend=c('Main channel',
+	legend(4,0.4,legend=c('Main channel',
         'Sandbar',
         'Wing dike',
         'Natural bank','Revetted bank',
@@ -339,7 +339,43 @@ if(n==6)
 	colLines<-c("red","blue")
 	for(hab in 1:7)
 		{
-		# TEMPERATURE
+        print(hab)
+		# STAGE	
+		maxy<- (max(unlist(sel_uci_stage[,hab]))*1.1)
+		miny<- min(unlist(sel_lci_stage[,hab]))
+		xlabs<- c("","Stage")	
+		xaxis<- c("n","s")
+        #sel_stage<-subset(sel_stage,stage_raw>=-0.45 & stage_raw<=11.6)
+		plot(stage~stage_raw,sel_stage,
+			type='n',
+			ylim=c(miny,maxy),
+            xlim=c(-2,12),
+			las=1,
+			ylab="Selection",
+			xlab=ifelse(hab==7,xlabs[2],xlabs[1]),
+			xaxt=ifelse(hab==7,xaxis[2],xaxis[1]))	
+        for(loc in 1:2)
+			{
+			indx<- which(sel_stage$loc==loc)
+			xy<-cbind(x=c(sel_stage$stage_raw[indx],
+				rev(sel_stage$stage_raw[indx])),
+				y=c(sel_lci_stage[indx,hab],
+					rev(sel_uci_stage[indx,hab])))
+			polygon(xy,col=cols[loc],border=NA)
+			points(sel_stage$stage_raw[indx],
+				sel_mn_stage[indx,hab],type='l',col=colLines[loc])
+			}
+		axis(1,at=axTicks(1),labels=FALSE)
+       
+
+		if(hab==7)
+			{
+			axis(1,at=axTicks(1),labels=TRUE)
+			mtext(side=1,"Stage",line=2.5)
+			}
+		panLab(paste0(letters[hab],") ",
+            habs_full[hab],sep=""))            
+        # TEMPERATURE
 		maxy<- (max(unlist(sel_uci_temp[,hab]))*1.1)
 		miny<- min(unlist(sel_lci_temp[,hab]))
 		xlabs<- c("","Temperature")
@@ -368,42 +404,11 @@ if(n==6)
 			polygon(xy,col=cols[loc],border=NA)
 			points(sel_temp$temp_raw[indx],
 				sel_mn_temp[indx,hab],type='l',col=colLines[loc])
-			}
-		panLab(paste0(letters[hab],") ",habs_full[hab],sep=""))
-		# STAGE	
-		maxy<- (max(unlist(sel_uci_stage[,hab]))*1.1)
-		miny<- min(unlist(sel_lci_stage[,hab]))
-		xlabs<- c("","Stage")	
-		xaxis<- c("n","s")
-        #sel_stage<-subset(sel_stage,stage_raw>=-0.45 & stage_raw<=11.6)
-		plot(stage~stage_raw,sel_stage,
-			type='n',
-			ylim=c(miny,maxy),
-            #xlim=c(-0.45,11.6),
-			las=1,
-			ylab="Selection",
-			xlab=ifelse(hab==7,xlabs[2],xlabs[1]),
-			xaxt=ifelse(hab==7,xaxis[2],xaxis[1]))	
-	
-		for(loc in 1:2)
-			{
-			indx<- which(sel_stage$loc==loc)
-			xy<-cbind(x=c(sel_stage$stage_raw[indx],
-				rev(sel_stage$stage_raw[indx])),
-				y=c(sel_lci_stage[indx,hab],
-					rev(sel_uci_stage[indx,hab])))
-			polygon(xy,col=cols[loc],border=NA)
-			points(sel_stage$stage_raw[indx],
-				sel_mn_stage[indx,hab],type='l',col=colLines[loc])
-			}
-		axis(1,at=axTicks(1),labels=FALSE)
-		if(hab==7)
-			{
-			axis(1,at=axTicks(1),labels=TRUE)
-			mtext(side=1,"Stage",line=2.5)
-			}
+            }
+
 		}
-	legend("topright",c("Catfish Point","Vicksburg"),bty='n',fill=colLines)
+	legend("topright",c("Catfish Point","Vicksburg"),
+        bty='n',fill=colLines,cex=0.8)
 	mtext(side=2, "Habitat selection",outer=TRUE,line=0)
  #dev.off()
 	}
