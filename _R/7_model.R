@@ -75,7 +75,7 @@ mod_01<- function()
 	
 	
 	# BEGIN HABITAT SELECTION MODEL
-		## PROCESS MODEL
+    ## PROCESS MODEL
 	for(i in 1:nobs2)
 		{
 		for(habitat in 1:nhabs)
