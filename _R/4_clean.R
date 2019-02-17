@@ -73,12 +73,12 @@ obs_p<- cbind(as.data.frame(mod_dat$X),obs_p)
 #######################################################################
 
 ## CATFISH POINT & VICSBURG TEMPERATURE
-temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
+temps<-scale(seq(1,33,by=1),temp_mn,temp_sd)
 selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
 
 ## CATFISH POINT & VICSBURG STAGE
-stages<- c(scale(seq(-0.37,11.6,length.out=30),stage_mn,stage_sd),
-    scale(seq(-0.45,10.7,length.out=30),stage_mn,stage_sd))
+stages<- c(scale(seq(-2,18,by=1),stage_mn,stage_sd),
+    scale(seq(-2,18,by=1),stage_mn,stage_sd))
 loc<-sort(rep(c(1,2),30))    
 selection<- rbind(selection,data.frame(temp=0,stage=stages,loc=loc))
 mod_dat2<- mod_dat
