@@ -31,8 +31,8 @@ vb_avail<-read.csv("_dat/VburgHabAvail.csv",na.strings = ".")
 vb_avail<- data.frame(loc=2, vb_avail)
 
 ## LOAD THE BEST APPROXIMATING MODEL
-load("_output/out-model-03.Rdata")
-M03<- out
+#load("_output/out-model-03.Rdata")
+#M03<- out
 
 ## LOAD ALL THE FITTED MODELS
 if(loadout==TRUE){
