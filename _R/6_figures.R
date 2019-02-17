@@ -28,7 +28,7 @@ if(n==3)
 	#color<-rev(brewer.pal(7,"Set2"))    
 	#color<- (grey(1/c(1:8))[-1])
 	## CATFISH POINT
-	xx<- data.frame(stage=seq(-0.37,11.6,0.1))
+	xx<- data.frame(stage=seq(-2,13,0.1))
 	## SCALE STAGE 
 	xx$stage_scaled<- scale(xx$stage, center = mean(dat$Stage.m), scale = sd(dat$Stage.m))
 	
@@ -53,7 +53,7 @@ if(n==3)
 
 	par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 	matplot(xx$stage,y_cum,type='n',las=1,xlab="",
-		ylab="",
+		ylab="",xlim=c(-2,13),
 		main="Catfish Point",xaxt='n',ylim=c(0,1))
 		axis(1,at=axTicks(1))
 	for(i in 7:1)
@@ -68,7 +68,7 @@ if(n==3)
 	
 	
 	## TARA TO VICKSBURG
-	xx<- data.frame(stage=seq(-0.45,10.7,0.1))
+	xx<- data.frame(stage=seq(-2,13,0.1))
 	## SCALE STAGE 
 	xx$stage_scaled<- scale(xx$stage, center = mean(dat$Stage.m), scale = sd(dat$Stage.m))
 
@@ -89,7 +89,7 @@ if(n==3)
 		return(p)
 		})
 	y_cum<- t(y_cum)
-	matplot(xx$stage,y_cum,type='n',las=1,xlab="",
+	matplot(xx$stage,y_cum,type='n',las=1,xlab="",xlim=c(-2,13),
 		ylab="",main="Vicksburg",xaxt='n',ylim=c(0,1))
 	axis(1,at=axTicks(1))
 	for(i in 7:1)
@@ -98,7 +98,7 @@ if(n==3)
 			c(y_cum[,i],rep(0,nrow(xx))),
 			col=color[i])		
 		}
-	legend(4,0.3,legend=c('Main channel',
+	legend(4,0.4,legend=c('Main channel',
         'Sandbar',
         'Wing dike',
         'Natural bank','Revetted bank',
@@ -114,7 +114,7 @@ if(n==4)## 4
 	# temp -1.6,1.6
 	# stage -2.2,2
 	preddat<- expand.grid(temp=sort(c(seq(4,32,0.25),temp_mn)),
-		stage=sort(c(seq(-0.37,11.6,0.1),stage_mn)),loc=1)
+		stage=sort(c(seq(-2,13,0.1),stage_mn)),loc=1)
 	preddat$temp_scaled<- scale(preddat$temp, center = temp_mn, scale = temp_sd)
 	preddat$stage_scaled<- scale(preddat$stage, center =stage_mn, scale = stage_sd)
 	
@@ -148,7 +148,7 @@ if(n==4)## 4
 	par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 	matplot(newdat$stage,y_cum,type='n',ylim=c(0,1),las=1, ylab="",
 		col=color,lty=1,lwd=2,main="Catfish Point",xaxt='n')
-    axis(1,at=axTicks(1),labels=TRUE)
+    axis(1,at=seq(-2,13,2),labels=TRUE)
 	for(i in 7:1)
 		{
 		x<- c(newdat$stage,rev(newdat$stage))
@@ -158,7 +158,7 @@ if(n==4)## 4
 
     ## VICKSBURG
     	preddat<- expand.grid(temp=sort(c(seq(4,32,0.25),temp_mn)),
-		stage=sort(c(seq(-0.45,10.7,0.1),stage_mn)),loc=2)
+		stage=sort(c(seq(-2,13,0.1),stage_mn)),loc=2)
 	preddat$temp_scaled<- scale(preddat$temp, center = temp_mn, scale = temp_sd)
 	preddat$stage_scaled<- scale(preddat$stage, center =stage_mn, scale = stage_sd)
 	b0<- M03$BUGSoutput$mean$beta1
@@ -187,8 +187,8 @@ if(n==4)## 4
 	y_cum<- t(apply(y,2,cumsum)	)		
 	y<- t(y)
 	matplot(newdat$stage,y_cum,type='n',ylim=c(0,1),las=1, ylab="",
-		col=color,lty=1,lwd=2,main="Vicksburg")
-
+		col=color,lty=1,lwd=2,main="Vicksburg",xaxt='n')
+    axis(1,at=seq(-2,13,2),labels=TRUE)
 	for(i in 7:1)
 		{
 		x<- c(newdat$stage,rev(newdat$stage))
@@ -248,7 +248,7 @@ par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
         ylim=c(0,1),las=1, ylab="",
 		main="Catfish Point",
         col=color,lty=1,lwd=2,xaxt='n')
-    axis(1,at=axTicks(1),labels=TRUE)
+    axis(1,at=seq(0,30,5),labels=TRUE)
 	for(i in 7:1)
 		{
 		x<- c(newdat$temp,rev(newdat$temp))
@@ -286,8 +286,8 @@ par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 	y_cum<- t(apply(y,2,cumsum)	)		
 	y<- t(y)
 	matplot(newdat$temp,y_cum,type='n',ylim=c(0,1),las=1, ylab="",
-		main="Vicksburg",col=color,lty=1,lwd=2)
-
+		main="Vicksburg",col=color,lty=1,lwd=2,xaxt='n')
+    axis(1,at=seq(0,30,5),labels=TRUE)
 	for(i in 7:1)
 		{
 		x<- c(newdat$temp,rev(newdat$temp))
@@ -311,7 +311,7 @@ if(n==6)
 	{
 	load("./_output/out-model-03-gof.Rdata")
 
-    stages<- scale(seq(-2,18,by=2),stage_mn,stage_sd)   
+    stages<- scale(seq(-2,13,by=2),stage_mn,stage_sd)   
     temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
     selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
     selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
@@ -324,7 +324,9 @@ if(n==6)
 	sel_uci<-  matrix(out$BUGSoutput$summary[
 		grep("sel",rownames(out$BUGSoutput$summary)),7],ncol=7,byrow=FALSE)
 
+        
 	sel_temp<-selection[1:14,]
+    #sel_temp<- subset(sel_temp, temp_raw<33)
 	sel_mn_temp<- sel_mn[1:14,]
 	sel_lci_temp<- sel_lci[1:14,]
 	sel_uci_temp<- sel_uci[1:14,]
@@ -339,7 +341,44 @@ if(n==6)
 	colLines<-c("red","blue")
 	for(hab in 1:7)
 		{
-		# TEMPERATURE
+        print(hab)
+		# STAGE	
+		maxy<- (max(unlist(sel_uci_stage[,hab]))*1.1)
+		miny<- min(unlist(sel_lci_stage[,hab]))
+		xlabs<- c("","Stage")	
+		xaxis<- c("n","s")
+        #sel_stage<-subset(sel_stage,stage_raw>=-0.45 & stage_raw<=11.6)
+		plot(stage~stage_raw,sel_stage,
+			type='n',
+			ylim=c(miny,maxy),
+            xlim=c(-2,13),
+			las=1,
+			ylab="Selection",
+			xlab=ifelse(hab==7,xlabs[2],xlabs[1]),
+			xaxt=ifelse(hab==7,xaxis[2],xaxis[1]))	
+        for(loc in 1:2)
+			{
+			indx<- which(sel_stage$loc==loc)
+			xy<-cbind(x=c(sel_stage$stage_raw[indx],
+				rev(sel_stage$stage_raw[indx])),
+				y=c(sel_lci_stage[indx,hab],
+					rev(sel_uci_stage[indx,hab])))
+			polygon(xy,col=cols[loc],border=NA)
+			points(sel_stage$stage_raw[indx],
+				sel_mn_stage[indx,hab],type='l',col=colLines[loc])
+			}
+		axis(1,at=axTicks(1),labels=FALSE)
+       
+
+		if(hab==7)
+			{
+			axis(1,at=axTicks(1),labels=TRUE)
+			mtext(side=1,"Stage",line=2.5)
+			}
+		panLab(paste0(letters[hab],") ",
+            habs_full[hab],sep=""))            
+        
+        # TEMPERATURE
 		maxy<- (max(unlist(sel_uci_temp[,hab]))*1.1)
 		miny<- min(unlist(sel_lci_temp[,hab]))
 		xlabs<- c("","Temperature")
@@ -347,7 +386,7 @@ if(n==6)
 		plot(stage~temp_raw,sel_temp,
 			type='n',
 			ylim=c(miny,maxy),
-			xlim=c(5,35),
+			xlim=c(3,32),
 			las=1,
 			ylab="Selection",
 			xlab=ifelse(hab==7,xlabs[2],xlabs[1]),
@@ -360,7 +399,7 @@ if(n==6)
 			}
 		for(loc in 1:2)
 			{
-			indx<- which(sel_temp$loc==loc)
+			indx<- which(sel_temp$loc==loc& sel_temp$temp_raw<=33)
 			xy<-cbind(x=c(sel_temp$temp_raw[indx],
 				rev(sel_temp$temp_raw[indx])),
 				y=c(sel_lci_temp[indx,hab],
@@ -368,42 +407,11 @@ if(n==6)
 			polygon(xy,col=cols[loc],border=NA)
 			points(sel_temp$temp_raw[indx],
 				sel_mn_temp[indx,hab],type='l',col=colLines[loc])
-			}
-		panLab(paste0(letters[hab],") ",habs_full[hab],sep=""))
-		# STAGE	
-		maxy<- (max(unlist(sel_uci_stage[,hab]))*1.1)
-		miny<- min(unlist(sel_lci_stage[,hab]))
-		xlabs<- c("","Stage")	
-		xaxis<- c("n","s")
-        #sel_stage<-subset(sel_stage,stage_raw>=-0.45 & stage_raw<=11.6)
-		plot(stage~stage_raw,sel_stage,
-			type='n',
-			ylim=c(miny,maxy),
-            #xlim=c(-0.45,11.6),
-			las=1,
-			ylab="Selection",
-			xlab=ifelse(hab==7,xlabs[2],xlabs[1]),
-			xaxt=ifelse(hab==7,xaxis[2],xaxis[1]))	
-	
-		for(loc in 1:2)
-			{
-			indx<- which(sel_stage$loc==loc)
-			xy<-cbind(x=c(sel_stage$stage_raw[indx],
-				rev(sel_stage$stage_raw[indx])),
-				y=c(sel_lci_stage[indx,hab],
-					rev(sel_uci_stage[indx,hab])))
-			polygon(xy,col=cols[loc],border=NA)
-			points(sel_stage$stage_raw[indx],
-				sel_mn_stage[indx,hab],type='l',col=colLines[loc])
-			}
-		axis(1,at=axTicks(1),labels=FALSE)
-		if(hab==7)
-			{
-			axis(1,at=axTicks(1),labels=TRUE)
-			mtext(side=1,"Stage",line=2.5)
-			}
+            }
+
 		}
-	legend("topright",c("Catfish Point","Vicksburg"),bty='n',fill=colLines)
+	legend("topright",c("Catfish Point","Vicksburg"),
+        bty='n',fill=colLines,cex=0.8)
 	mtext(side=2, "Habitat selection",outer=TRUE,line=0)
  #dev.off()
 	}
@@ -411,8 +419,8 @@ if(n==6)
 if(n=="S2")
     {## TEMPERATURE
     load("_output/out-model-03-gof.Rdata")
-    stages<- scale(seq(-2,18,by=2),stage_mn,stage_sd)   
-    temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
+    stages<- scale(seq(-2,18,by=1),stage_mn,stage_sd)   
+    temps<-scale(seq(1,33,by=1),temp_mn,temp_sd)
 	selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
 	selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
 	selection$index<- c(1:nrow(selection))
@@ -436,7 +444,7 @@ if(n=="S2")
 		yyy<-ifelse(kk %in% c(2,4,6),'s','s')
 		plot(stage~temp_raw,selection,type='n',ylim=c(miny,
 			maxy),
-			xlim=c(-1,35),las=1,ylab="Selection",
+			xlim=c(3,32),las=1,ylab="Selection",
 			xlab="Temperature",xaxt=xxx,yaxt=yyy)
 		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=TRUE)}
 		if(kk %in% c(2,4,6)){axis(2, at=axTicks(2),labels=FALSE)}
@@ -469,8 +477,8 @@ if(n=="S2")
 if(n=="S1")
     {## Stage
     load("_output/out-model-03-gof.Rdata")
-    stages<- scale(seq(-2,18,by=2),stage_mn,stage_sd)   
-    temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
+    stages<- scale(seq(-2,13,by=1),stage_mn,stage_sd)   
+    temps<-scale(seq(5,38,by=1),temp_mn,temp_sd)
 	selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
 	selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
 	selection$index<- c(1:nrow(selection))
@@ -494,7 +502,7 @@ if(n=="S1")
 		yyy<-ifelse(kk %in% c(2,4,6),'s','s')
 		plot(stage~stage_raw,selection,type='n',ylim=c(miny,
 			maxy),
-			xlim=c(-2,18),las=1,ylab="Selection",
+			xlim=c(-2,13),las=1,ylab="Selection",
 			xlab="Stage",xaxt=xxx,yaxt=yyy)
 		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=TRUE)}
 		if(kk %in% c(2,4,6)){axis(2, at=axTicks(2),labels=FALSE)}
@@ -518,7 +526,7 @@ if(n=="S1")
 		panLab(habs_full[kk])
         rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==1,]$Stage.m)))
         rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==2,]$Stage.m)),col='red')
-		mtext(side=1, "Stage",outer=TRUE,line=0.5,cex=1.3)
+		mtext(side=1, "Stage (m)",outer=TRUE,line=0.5,cex=1.3)
 		mtext(side=2, "Habitat selection",outer=TRUE,line=0.5,cex=1.3)
 		}
 	}
