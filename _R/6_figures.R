@@ -28,7 +28,7 @@ if(n==3)
 	#color<-rev(brewer.pal(7,"Set2"))    
 	#color<- (grey(1/c(1:8))[-1])
 	## CATFISH POINT
-	xx<- data.frame(stage=seq(-2,13,0.1))
+	xx<- data.frame(stage=seq(-2,12,0.1))
 	## SCALE STAGE 
 	xx$stage_scaled<- scale(xx$stage, center = mean(dat$Stage.m), scale = sd(dat$Stage.m))
 	
@@ -53,9 +53,9 @@ if(n==3)
 
 	par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 	matplot(xx$stage,y_cum,type='n',las=1,xlab="",
-		ylab="",xlim=c(-2,13),
+		ylab="",xlim=c(-2,12),
 		main="Catfish Point",xaxt='n',ylim=c(0,1))
-		axis(1,at=axTicks(1))
+		axis(1,at=axTicks(1),labels=FALSE)
 	for(i in 7:1)
 		{
 		polygon(c(xx$stage,rev(xx$stage)),
@@ -68,7 +68,7 @@ if(n==3)
 	
 	
 	## TARA TO VICKSBURG
-	xx<- data.frame(stage=seq(-2,13,0.1))
+	xx<- data.frame(stage=seq(-2,12,0.1))
 	## SCALE STAGE 
 	xx$stage_scaled<- scale(xx$stage, center = mean(dat$Stage.m), scale = sd(dat$Stage.m))
 
@@ -89,9 +89,9 @@ if(n==3)
 		return(p)
 		})
 	y_cum<- t(y_cum)
-	matplot(xx$stage,y_cum,type='n',las=1,xlab="",xlim=c(-2,13),
+	matplot(xx$stage,y_cum,type='n',las=1,xlab="",xlim=c(-2,12),
 		ylab="",main="Vicksburg",xaxt='n',ylim=c(0,1))
-	axis(1,at=axTicks(1))
+	axis(1,at=axTicks(1),labels=TRUE)
 	for(i in 7:1)
 		{
 		polygon(c(xx$stage,rev(xx$stage)),
@@ -114,7 +114,7 @@ if(n==4)## 4
 	# temp -1.6,1.6
 	# stage -2.2,2
 	preddat<- expand.grid(temp=sort(c(seq(4,32,0.25),temp_mn)),
-		stage=sort(c(seq(-2,13,0.1),stage_mn)),loc=1)
+		stage=sort(c(seq(-2,12,0.1),stage_mn)),loc=1)
 	preddat$temp_scaled<- scale(preddat$temp, center = temp_mn, scale = temp_sd)
 	preddat$stage_scaled<- scale(preddat$stage, center =stage_mn, scale = stage_sd)
 	
@@ -148,7 +148,7 @@ if(n==4)## 4
 	par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 	matplot(newdat$stage,y_cum,type='n',ylim=c(0,1),las=1, ylab="",
 		col=color,lty=1,lwd=2,main="Catfish Point",xaxt='n')
-    axis(1,at=seq(-2,13,2),labels=TRUE)
+    axis(1,at=seq(-2,12,2),labels=FALSE)
 	for(i in 7:1)
 		{
 		x<- c(newdat$stage,rev(newdat$stage))
@@ -158,7 +158,7 @@ if(n==4)## 4
 
     ## VICKSBURG
     	preddat<- expand.grid(temp=sort(c(seq(4,32,0.25),temp_mn)),
-		stage=sort(c(seq(-2,13,0.1),stage_mn)),loc=2)
+		stage=sort(c(seq(-2,12,0.1),stage_mn)),loc=2)
 	preddat$temp_scaled<- scale(preddat$temp, center = temp_mn, scale = temp_sd)
 	preddat$stage_scaled<- scale(preddat$stage, center =stage_mn, scale = stage_sd)
 	b0<- M03$BUGSoutput$mean$beta1
@@ -188,7 +188,7 @@ if(n==4)## 4
 	y<- t(y)
 	matplot(newdat$stage,y_cum,type='n',ylim=c(0,1),las=1, ylab="",
 		col=color,lty=1,lwd=2,main="Vicksburg",xaxt='n')
-    axis(1,at=seq(-2,13,2),labels=TRUE)
+    axis(1,at=seq(-2,12,2),labels=TRUE)
 	for(i in 7:1)
 		{
 		x<- c(newdat$stage,rev(newdat$stage))
@@ -213,7 +213,7 @@ if(n==5)
 	{# HABITAT SELECTION FOR CATFISH POINT: TEMPERATURE
 	# temp -1.6,1.6
 	# stage -2.2,2
-	preddat<- expand.grid(temp=sort(c(seq(4,32,0.25),temp_mn)),
+	preddat<- expand.grid(temp=sort(c(seq(3,32,0.25),temp_mn)),
 		stage=sort(c(seq(-2,12,0.1),stage_mn)),loc=1)
 	preddat$temp_scaled<- scale(preddat$temp, center = temp_mn, scale = temp_sd)
 	preddat$stage_scaled<- scale(preddat$stage, center =stage_mn, scale = stage_sd)
@@ -248,7 +248,7 @@ par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
         ylim=c(0,1),las=1, ylab="",
 		main="Catfish Point",
         col=color,lty=1,lwd=2,xaxt='n')
-    axis(1,at=seq(0,30,5),labels=TRUE)
+    axis(1,at=seq(0,30,5),labels=FALSE)
 	for(i in 7:1)
 		{
 		x<- c(newdat$temp,rev(newdat$temp))
@@ -256,7 +256,7 @@ par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 		polygon(x,y,col=color[i])		
 		}
     ## VICKSBURG
-    preddat<- expand.grid(temp=sort(c(seq(4,30,0.25),temp_mn)),
+    preddat<- expand.grid(temp=sort(c(seq(3,32,0.25),temp_mn)),
 		stage=sort(c(seq(0,14,0.1),stage_mn)),loc=2)
 	preddat$temp_scaled<- scale(preddat$temp, center = temp_mn, scale = temp_sd)
 	preddat$stage_scaled<- scale(preddat$stage, center =stage_mn, scale = stage_sd)
@@ -309,32 +309,7 @@ par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 	}    
 if(n==6)
 	{
-	load("./_output/out-model-03-gof.Rdata")
-
-    stages<- scale(seq(-2,13,by=2),stage_mn,stage_sd)   
-    temps<-scale(seq(5,38,by=5),temp_mn,temp_sd)
-    selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
-    selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
-	selection$temp_raw<- selection$temp*temp_sd+temp_mn
-	selection$stage_raw<- selection$stage*stage_sd+stage_mn	
-    sel_mn<- matrix(out$BUGSoutput$summary[
-		grep("sel",rownames(out$BUGSoutput$summary)),1],ncol=7,byrow=FALSE)
-	sel_lci<-  matrix(out$BUGSoutput$summary[
-		grep("sel",rownames(out$BUGSoutput$summary)),3],ncol=7,byrow=FALSE)
-	sel_uci<-  matrix(out$BUGSoutput$summary[
-		grep("sel",rownames(out$BUGSoutput$summary)),7],ncol=7,byrow=FALSE)
-
-        
-	sel_temp<-selection[1:14,]
-    #sel_temp<- subset(sel_temp, temp_raw<33)
-	sel_mn_temp<- sel_mn[1:14,]
-	sel_lci_temp<- sel_lci[1:14,]
-	sel_uci_temp<- sel_uci[1:14,]
-	sel_stage<-selection[15:36,]
-	sel_mn_stage<- sel_mn[15:36,]
-	sel_lci_stage<- sel_lci[15:36,]
-	sel_uci_stage<- sel_uci[15:36,]
-	par(mfrow=c(7,2),mar=c(1,3,0,0),oma=c(3,2,1,1))
+    par(mfrow=c(7,2),mar=c(1,3,0,0),oma=c(3,2,1,1))
 	trans_red<- rgb(228,16,16,alpha=40,maxColorValue=255)
 	trans_blu<- rgb(0,0,255,alpha=40,maxColorValue=255)
 	cols<- c(trans_red,trans_blu)
@@ -343,29 +318,28 @@ if(n==6)
 		{
         print(hab)
 		# STAGE	
-		maxy<- (max(unlist(sel_uci_stage[,hab]))*1.1)
-		miny<- min(unlist(sel_lci_stage[,hab]))
+		maxy<- (max(pdat[pdat$habId==hab & pdat$temp==0,]$upper)*1.1)
+		miny<- min(pdat[pdat$habId==hab & pdat$temp==0,]$lower)
 		xlabs<- c("","Stage")	
 		xaxis<- c("n","s")
         #sel_stage<-subset(sel_stage,stage_raw>=-0.45 & stage_raw<=11.6)
-		plot(stage~stage_raw,sel_stage,
+		plot(selectivity~stage_raw,pdat,
 			type='n',
 			ylim=c(miny,maxy),
-            xlim=c(-2,13),
+            xlim=c(-2,12),
 			las=1,
 			ylab="Selection",
 			xlab=ifelse(hab==7,xlabs[2],xlabs[1]),
 			xaxt=ifelse(hab==7,xaxis[2],xaxis[1]))	
-        for(loc in 1:2)
+        for(ii in 1:2)
 			{
-			indx<- which(sel_stage$loc==loc)
-			xy<-cbind(x=c(sel_stage$stage_raw[indx],
-				rev(sel_stage$stage_raw[indx])),
-				y=c(sel_lci_stage[indx,hab],
-					rev(sel_uci_stage[indx,hab])))
-			polygon(xy,col=cols[loc],border=NA)
-			points(sel_stage$stage_raw[indx],
-				sel_mn_stage[indx,hab],type='l',col=colLines[loc])
+			locDat<- subset(pdat, loc==ii & habId==hab & temp==0)
+			xy<-cbind(x=c(locDat$stage_raw,rev(locDat$stage_raw)),
+				y=c(locDat$upper,
+					rev(locDat$lower)))
+			polygon(xy,col=cols[ii],border=NA)
+			points(selectivity~stage_raw,locDat,type='l',col=colLines[ii],
+                subset=(loc==ii & habId==hab & temp==0))
 			}
 		axis(1,at=axTicks(1),labels=FALSE)
        
@@ -379,11 +353,11 @@ if(n==6)
             habs_full[hab],sep=""))            
         
         # TEMPERATURE
-		maxy<- (max(unlist(sel_uci_temp[,hab]))*1.1)
-		miny<- min(unlist(sel_lci_temp[,hab]))
+		maxy<- (max(pdat[pdat$habId==hab & pdat$stage==0,]$upper)*1.1)
+		miny<- min(pdat[pdat$habId==hab& pdat$stage==0,]$lower)
 		xlabs<- c("","Temperature")
 		xaxis<- c("n","s")
-		plot(stage~temp_raw,sel_temp,
+		plot(selectivity~temp_raw,pdat,
 			type='n',
 			ylim=c(miny,maxy),
 			xlim=c(3,32),
@@ -397,16 +371,15 @@ if(n==6)
 			axis(1,at=axTicks(1),labels=TRUE)
 			mtext(side=1,"Temperature",line=2.5)
 			}
-		for(loc in 1:2)
+		for(ii in 1:2)
 			{
-			indx<- which(sel_temp$loc==loc& sel_temp$temp_raw<=33)
-			xy<-cbind(x=c(sel_temp$temp_raw[indx],
-				rev(sel_temp$temp_raw[indx])),
-				y=c(sel_lci_temp[indx,hab],
-					rev(sel_uci_temp[indx,hab])))
-			polygon(xy,col=cols[loc],border=NA)
-			points(sel_temp$temp_raw[indx],
-				sel_mn_temp[indx,hab],type='l',col=colLines[loc])
+            locDat<- subset(pdat, loc==ii & habId==hab & stage==0)
+			xy<-cbind(x=c(locDat$temp_raw,rev(locDat$temp_raw)),
+				y=c(locDat$upper,
+					rev(locDat$lower)))
+			polygon(xy,col=cols[ii],border=NA)
+			points(selectivity~temp_raw,locDat,type='l',col=colLines[ii],
+                subset=(loc==ii & habId==hab & stage==0))
             }
 
 		}
@@ -415,123 +388,90 @@ if(n==6)
 	mtext(side=2, "Habitat selection",outer=TRUE,line=0)
  #dev.off()
 	}
+
+if(n=="S1")
+    {## Stage
+ 	par(mfrow=c(4,2),mar=c(2,3,0,0),oma=c(2,2,1,1))
+	
+    
+    for(kk in 1:7)
+		{
+		hab=kk
+        
+		maxy<- (max(pdat[pdat$habId==hab & pdat$temp==0,]$upper)*1.1)
+		miny<- min(pdat[pdat$habId==hab& pdat$temp==0,]$lower)
+		
+        ## CP
+        locDat<- subset(pdat, loc==1 & habId==hab & temp==0 & round(stage_raw) %in% c(-2,0,2,4,6,8,10,12)	)	
+        xxx<-ifelse(kk %in% c(1,2,3,4,5),'n','s')
+		yyy<-ifelse(kk %in% c(2,4,6),'s','s')
+		plot(selectivity~stage_raw,locDat,type='n',ylim=c(miny,
+			maxy),
+			xlim=c(-2,13),las=1,ylab="Selection",
+			xlab="Temperature",xaxt=xxx,yaxt=yyy)
+		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=TRUE)}
+		if(kk %in% c(2,4,6)){axis(2, at=axTicks(2),labels=FALSE)}
+        
+        
+		points(locDat$stage_raw-0.1,locDat$selectivity,pch=19)
+		segments(locDat$stage_raw-0.1,locDat$lower,locDat$stage_raw-0.1,locDat$upper)
+        rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==1,]$Stage.m)))
+
+        ## TV
+        locDat<- subset(pdat, loc==2 & habId==hab & temp==0 & round(stage_raw) %in% c(-2,0,2,4,6,8,10,12)	)
+		points(locDat$stage_raw+0.1,locDat$selectivity,pch=17,col='red')
+		segments(locDat$stage_raw+0.1,locDat$lower,locDat$stage_raw+0.1,locDat$upper,col='red')
+        rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==2,]$Stage.m)),col='red')       
+        abline(h=1,lty=3)
+		panLab(habs_full[kk])
+		mtext(side=1, "Stage (m)",outer=TRUE,line=0.5,cex=1.3)
+		mtext(side=2, "Habitat selection",outer=TRUE,line=0.5,cex=1.3)
+        }
+    
+    }
+  
     
 if(n=="S2")
     {## TEMPERATURE
-    load("_output/out-model-03-gof.Rdata")
-    stages<- scale(seq(-2,18,by=1),stage_mn,stage_sd)   
-    temps<-scale(seq(1,33,by=1),temp_mn,temp_sd)
-	selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
-	selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
-	selection$index<- c(1:nrow(selection))
-	sel_mn<- matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),1],ncol=7,byrow=FALSE)
-	sel_lci<-  matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),3],ncol=7,byrow=FALSE)
-	sel_uci<-  matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),7],ncol=7,byrow=FALSE)
-	selection$temp_raw<- selection$temp*temp_sd+temp_mn
-	selection$stage_raw<- selection$stage*stage_sd+stage_mn	
-
-
 	
 	par(mfrow=c(4,2),mar=c(2,3,0,0),oma=c(2,2,1,1))
 	for(kk in 1:7)
 		{
 		hab=kk
-		indx<- which(selection$stage==0)		
-		maxy<- (max(unlist(sel_uci[,hab]))*1.1)
-		miny<- min(unlist(sel_lci[,hab]))
-		pdat<-subset(selection, loc==1 & stage==0)
-		xxx<-ifelse(kk %in% c(1,2,3,4,5),'n','s')
+		maxy<- (max(pdat[pdat$habId==hab & pdat$stage==0,]$upper)*1.1)
+		miny<- min(pdat[pdat$habId==hab& pdat$stage==0,]$lower)
+		
+        ## CP
+        locDat<- subset(pdat, loc==1 & habId==hab & stage==0 & round(temp_raw)%in%c(0,5,10,15,20,25,30))		
+        xxx<-ifelse(kk %in% c(1,2,3,4,5),'n','s')
 		yyy<-ifelse(kk %in% c(2,4,6),'s','s')
-		plot(stage~temp_raw,selection,type='n',ylim=c(miny,
+		plot(selectivity~temp_raw,locDat,type='n',ylim=c(miny,
 			maxy),
 			xlim=c(3,32),las=1,ylab="Selection",
 			xlab="Temperature",xaxt=xxx,yaxt=yyy)
 		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=TRUE)}
 		if(kk %in% c(2,4,6)){axis(2, at=axTicks(2),labels=FALSE)}
-		for(i in 1:nrow(pdat))
-			{
-			ii<- pdat$index[i]
-			points(pdat$temp_raw[i]-0.1,sel_mn[ii,hab],pch=19)
-			segments(pdat$temp_raw[i]-0.1,sel_lci[ii,hab],pdat$temp_raw[i]-0.1,sel_uci[ii,hab])
-			}
-		pdat<-subset(selection, loc==2 & stage==0)
-		for(i in 1:nrow(pdat))
-			{
-			ii<- pdat$index[i]
-			points(pdat$temp_raw[i]+0.1,sel_mn[ii,hab],pch=17,col='red')
-			segments(pdat$temp_raw[i]+0.1,
-				sel_lci[ii,hab],
-				pdat$temp_raw[i]+0.1,
-				sel_uci[ii,hab],col='red')
-            }		
-		abline(h=1,lty=3)
-		panLab(habs_full[kk])
+        
+        
+		points(locDat$temp_raw-0.1,locDat$selectivity,pch=19)
+		segments(locDat$temp_raw-0.1,locDat$lower,locDat$temp_raw-0.1,locDat$upper)
         rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==1,]$TempC)))
-        rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==2,]$TempC)),col='red')
+
+        ## TV
+        locDat<- subset(pdat, loc==2 & habId==hab & stage==0 & round(temp_raw)%in%c(0,5,10,15,20,25,30))
+		points(locDat$temp_raw+0.1,locDat$selectivity,pch=17,col='red')
+		segments(locDat$temp_raw+0.1,locDat$lower,locDat$temp_raw+0.1,locDat$upper,col='red')
+        rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==2,]$TempC)),col='red')       
+        abline(h=1,lty=3)
+		panLab(habs_full[kk])
 		mtext(side=1, "Temperature (C)",outer=TRUE,line=0.5,cex=1.3)
 		mtext(side=2, "Habitat selection",outer=TRUE,line=0.5,cex=1.3)
 		}
 
 	}	
 
-if(n=="S1")
-    {## Stage
-    load("_output/out-model-03-gof.Rdata")
-    stages<- scale(seq(-2,13,by=1),stage_mn,stage_sd)   
-    temps<-scale(seq(5,38,by=1),temp_mn,temp_sd)
-	selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
-	selection<- rbind(selection,expand.grid(temp=0,stage=stages,loc=c(1,2)))
-	selection$index<- c(1:nrow(selection))
-	sel_mn<- matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),1],ncol=7,byrow=FALSE)
-	sel_lci<-  matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),3],ncol=7,byrow=FALSE)
-	sel_uci<-  matrix(out$BUGSoutput$summary[grep("sel",rownames(out$BUGSoutput$summary)),7],ncol=7,byrow=FALSE)
-	selection$temp_raw<- selection$temp*temp_sd+temp_mn
-	selection$stage_raw<- selection$stage*stage_sd+stage_mn	
-
-
-	
-	par(mfrow=c(4,2),mar=c(2,3,0,0),oma=c(2,2,1,1))
-	for(kk in 1:7)
-		{
-		hab=kk
-		indx<- which(selection$temp==0)		
-		maxy<- (max(unlist(sel_uci[,hab]))*1.1)
-		miny<- min(unlist(sel_lci[,hab]))
-		pdat<-subset(selection, loc==1 & temp==0)
-		xxx<-ifelse(kk %in% c(1,2,3,4,5),'n','s')
-		yyy<-ifelse(kk %in% c(2,4,6),'s','s')
-		plot(stage~stage_raw,selection,type='n',ylim=c(miny,
-			maxy),
-			xlim=c(-2,13),las=1,ylab="Selection",
-			xlab="Stage",xaxt=xxx,yaxt=yyy)
-		if(kk %in% c(1,2,3,4,5)){axis(1, at=axTicks(1),labels=TRUE)}
-		if(kk %in% c(2,4,6)){axis(2, at=axTicks(2),labels=FALSE)}
-		for(i in 1:nrow(pdat))
-			{
-			ii<- pdat$index[i]
-			points(pdat$stage_raw[i]-0.1,sel_mn[ii,hab],pch=19)
-			segments(pdat$stage_raw[i]-0.1,sel_lci[ii,hab],pdat$stage_raw[i]-0.1,sel_uci[ii,hab])
-			}
-		pdat<-subset(selection, loc==2 & temp==0)
-		for(i in 1:nrow(pdat))
-			{
-			ii<- pdat$index[i]
-			points(pdat$stage_raw[i]+0.1,sel_mn[ii,hab],pch=17,col='red')
-			segments(pdat$stage_raw[i]+0.1,
-				sel_lci[ii,hab],
-				pdat$stage_raw[i]+0.1,
-				sel_uci[ii,hab],col='red')
-            }		
-		abline(h=1,lty=3)
-		panLab(habs_full[kk])
-        rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==1,]$Stage.m)))
-        rug(jitter(na.omit(dat[dat$habitat==kk&dat$loc==2,]$Stage.m)),col='red')
-		mtext(side=1, "Stage (m)",outer=TRUE,line=0.5,cex=1.3)
-		mtext(side=2, "Habitat selection",outer=TRUE,line=0.5,cex=1.3)
-		}
-	}
-    
-    }
+  
+}
     
     
     

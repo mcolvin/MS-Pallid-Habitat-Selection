@@ -85,3 +85,42 @@ selection<- rbind(selection,data.frame(temp=0,stage=stages,loc=loc))
 mod_dat2<- mod_dat
 mod_dat2$n_sel<- nrow(selection)
 mod_dat2$select<- selection	
+
+
+
+#######################################################################
+#
+#  PREDICTED RESPONSES
+#
+#######################################################################
+
+load("_output/out-model-03-gof.Rdata")
+
+## CATFISH POINT & VICSBURG TEMPERATURE
+temps<-scale(seq(1,33,by=1),temp_mn,temp_sd)
+selection<- expand.grid(temp=temps,stage=0,loc=c(1,2))
+
+## CATFISH POINT & VICSBURG STAGE
+xx<-seq(-2,18,by=1)
+stages<- c(scale(xx,stage_mn,stage_sd),
+    scale(xx,stage_mn,stage_sd))
+loc<-sort(rep(c(1,2),length(xx)))    
+selection<- rbind(selection,data.frame(temp=0,stage=stages,loc=loc))
+selection$temp_raw<- selection$temp*as.numeric(attributes(temps)[3])+as.numeric(attributes(temps)[2])
+stages<- scale(xx,stage_mn,stage_sd)
+selection$stage_raw<- selection$stage*as.numeric(attributes(stages)[3])+as.numeric(attributes(stages)[2])
+pdat<- selection
+pdat$habId<-1
+for(i in 2:7)
+    {
+    app<- selection
+    app$habId<-i
+    pdat<-rbind(pdat,app)
+    }
+indx<-grep("sel",colnames(out$BUGSoutput$sims.matrix))
+pdat$lower<-apply(out$BUGSoutput$sims.matrix[,indx],2,quantile,prob=0.025)
+pdat$selectivity<-apply(out$BUGSoutput$sims.matrix[,indx],2,mean)
+pdat$upper<-apply(out$BUGSoutput$sims.matrix[,indx],2,quantile,prob=0.975)
+
+pdat<- subset(pdat, stage_raw >=-2 & stage_raw <=12)
+pdat<- subset(pdat, temp_raw >=3 & temp_raw <=32)

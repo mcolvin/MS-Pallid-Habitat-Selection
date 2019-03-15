@@ -60,3 +60,7 @@ if(loadout==TRUE){
     load("_output/out-model-08.Rdata")
     M08<- out
     }
+
+# NEED FOR FIGURE 5 
+load("_output/out-model-03.Rdata")
+M03<- out
