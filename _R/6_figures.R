@@ -63,7 +63,7 @@ if(n==3)
 			col=color[i])		
 		}
 	#matpoints(obs_p[obs_p$loc==1,]$Stage,obs_p[obs_p$loc==1,-c(1,2)],pch=1,type='p')
-	mtext(side=2, "Proportion of Available Habitat Types",outer=TRUE, line=0)
+	mtext(side=2, "Proportion of available habitat types",outer=TRUE, line=0)
 	mtext(side=1, "Stage (m)",outer=TRUE, line=0)
 	
 	
@@ -198,7 +198,7 @@ if(n==4)## 4
 		
 	#mtext(side=3, "TARA TO VICKSBURG", line=-0.75,outer=TRUE,cex=1.5)
 	mtext(side=1, "Stage (m)", line=0,outer=TRUE)
-	mtext(side=2, "Cumulative Probability of Habitat Use", line=-0.75,outer=TRUE)
+	mtext(side=2, "Cumulative probability of habitat use", line=0,outer=TRUE)
     	legend(2.2,0.3,legend=c('Main channel',
         'Sandbar',
         'Wing dike',
@@ -296,7 +296,7 @@ par(mfrow=c(2,1),mar=c(3,3,1,1),oma=c(2,2,1,1))
 		}
 	#mtext(side=3, "TARA TO VICKSBURG", line=-0.75,outer=TRUE,cex=1.5)
 	mtext(side=1, expression(paste("Temperature (",degree,"C)")), line=0,outer=TRUE)
-	mtext(side=2, "Cumulative Probability of Habitat Use",
+	mtext(side=2, "Cumulative probability of habitat use",
         line=0,outer=TRUE)
     legend(10.5,0.3,legend=c('Main channel',
         'Sandbar',
